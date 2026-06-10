@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PR 時の視覚確認方針</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./index.html" aria-label="Design Docs home">
+        <span class="brand-mark">docs</span>
+        <span><strong>Design Docs</strong><small>Material style</small></span>
+      </a>
+      <nav aria-label="ドキュメント一覧"><a href="./architecture/sample-ec-service.html"><span class="nav-icon">article</span><span>サンプル EC サービス設計書</span></a>
+<a href="./index.html"><span class="nav-icon">article</span><span>Material Design Docs サンプルポータル</span></a>
+<a href="./pr-visual-review.html" aria-current="page" class="active"><span class="nav-icon">article</span><span>PR 時の視覚確認方針</span></a>
+<a href="./versioning.html"><span class="nav-icon">article</span><span>設計書のバージョン管理</span></a></nav>
+    </aside>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Markdown / UML / Architecture</p>
+          <div class="page-title">PR 時の視覚確認方針</div>
+        </div>
+        <span class="github-chip"><span class="nav-icon">code</span>v0.3.0 / 7b1e9f8</span>
+      </header>
+      <main class="content"><article class="doc-card"><h1 id="pr-時の視覚確認方針">PR 時の視覚確認方針</h1>
+<h2 id="目的">目的</h2>
+<p>Markdown のテキスト差分だけでは、図の崩れ、画像リンク切れ、表の見え方を見落としやすいため、Pull Request ごとにビルド済み HTML を確認できるようにします。</p>
+<h2 id="推奨フロー">推奨フロー</h2>
+<ol>
+<li>PR 作成時に GitHub Actions で <code>npm test</code> を実行する。</li>
+<li>同一リポジトリ内の PR では、<code>gh-pages</code> ブランチの <code>previews/pr-&lt;番号&gt;/</code> に PR 版 HTML を公開する。</li>
+<li>workflow が <code>previews/versions.json</code> に PR preview を登録し、メインページの「公開済みバージョン」からたどれるようにする。</li>
+<li>workflow が PR コメントに投稿する Preview URL、またはメインページの Version index を開く。</li>
+<li>画面フッターまたは <code>version.json</code> で、レビュー対象のドキュメント版・短縮 SHA・ビルド時刻を確認する。</li>
+<li>Mermaid、PlantUML、画像、表の表示を視覚確認する。</li>
+<li>artifact の <code>design-docs-site</code> は、権限や Pages 設定で preview URL を使えない場合のフォールバックとして確認する。</li>
+</ol>
+<h2 id="github-pages-で-pr-差分を確認したい場合">GitHub Pages で PR 差分を確認したい場合</h2>
+<p>main で公開している GitHub Pages を維持したまま PR 差分を URL で確認するため、このリポジトリでは <strong>branch-based Pages preview</strong> を採用します。</p>
+<ul>
+<li>production は <code>gh-pages</code> ブランチのルートに公開する。</li>
+<li>PR preview は同じ <code>gh-pages</code> ブランチの <code>previews/pr-&lt;番号&gt;/</code> に別バージョンとして公開する。</li>
+<li>PR が更新されるたびに同じ preview subpath を上書きし、<code>previews/versions.json</code> の該当エントリを更新する。</li>
+<li>PR が closed になったら該当 preview subpath を空にし、<code>previews/versions.json</code> からも削除する。</li>
+</ul>
+<p>GitHub Pages の設定は、リポジトリの <strong>Settings &gt; Pages &gt; Build and deployment</strong> で <strong>Deploy from a branch</strong> を選び、branch を <code>gh-pages</code>、folder を <code>/ (root)</code> にします。これにより production URL は維持しつつ、PR 版は <code>/previews/pr-&lt;番号&gt;/</code> で直接確認できます。</p>
+<h2 id="追加検討案">追加検討案</h2>
+<ul>
+<li>Playwright で主要ページのスクリーンショットを取得し、PR artifact に含める</li>
+<li>reg-suit や BackstopJS で main ブランチとの差分画像を生成する</li>
+<li>fork からの PR も URL preview したい場合は、preview 専用 Pages リポジトリまたは外部ホスティングに分離する</li>
+</ul>
+<h2 id="判断基準">判断基準</h2>
+<table>
+<tr><th>方法</th><th>メリット</th><th>注意点</th></tr>
+<tr><td>HTML artifact</td><td>権限や fork PR に強い</td><td>ダウンロードが必要</td></tr>
+<tr><td>スクリーンショット artifact</td><td>視覚差分を残しやすい</td><td>撮影対象ページの管理が必要</td></tr>
+<tr><td>Visual Regression</td><td>差分検知を自動化できる</td><td>初期設定とベースライン管理が必要</td></tr>
+<tr><td>Preview URL</td><td>ダウンロード不要でレビュー体験がよい</td><td><code>gh-pages</code> branch publishing の Pages 設定が必要</td></tr>
+</table></article><footer class="version-footer"><span>Docs v0.3.0</span><span>6/merge @ 7b1e9f8</span><span>Built 2026-06-10T23:47:10Z</span></footer></main>
+    </div>
+  </div>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
+
+    const versions = document.querySelector('#published-versions');
+    if (versions) {
+      const escapeText = (value) => String(value ?? '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+      const renderPreview = (preview) => {
+        const title = preview.title || 'PR #' + preview.prNumber;
+        const ref = preview.refName || preview.headRefName || 'preview';
+        const sha = preview.shortSha || (preview.sha ? String(preview.sha).slice(0, 7) : 'unknown');
+        const built = preview.buildTime || preview.updatedAt || '';
+        return '<a class="version-item" href="' + escapeText(preview.url) + '">'
+          + '<span class="version-kind"><span class="nav-icon">preview</span>PR Preview</span>'
+          + '<strong>' + escapeText(title) + '</strong>'
+          + '<small>' + escapeText(ref) + ' @ ' + escapeText(sha) + '</small>'
+          + '<small>' + escapeText(built) + '</small>'
+          + '</a>';
+      };
+
+      fetch(versions.dataset.versionsUrl, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : { previews: [] })
+        .then((data) => {
+          const previews = Array.isArray(data) ? data : (data.previews || []);
+          const validPreviews = previews.filter((preview) => preview && preview.url);
+          const empty = versions.querySelector('.version-empty');
+          if (!validPreviews.length) {
+            if (empty) empty.textContent = '公開中の PR preview はまだありません。';
+            return;
+          }
+          if (empty) empty.remove();
+          versions.insertAdjacentHTML('beforeend', validPreviews.map(renderPreview).join(''));
+        })
+        .catch(() => {
+          const empty = versions.querySelector('.version-empty');
+          if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+        });
+    }
+  </script>
+</body>
+</html>
