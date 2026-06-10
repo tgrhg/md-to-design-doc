@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Material Design Docs サンプルポータル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/site.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./index.html" aria-label="Design Docs home">
+        <span class="brand-mark">docs</span>
+        <span><strong>Design Docs</strong><small>Material style</small></span>
+      </a>
+      <nav aria-label="ドキュメント一覧"><a href="./architecture/sample-ec-service.html"><span class="nav-icon">article</span><span>サンプル EC サービス設計書</span></a>
+<a href="./index.html" aria-current="page" class="active"><span class="nav-icon">article</span><span>Material Design Docs サンプルポータル</span></a>
+<a href="./pr-visual-review.html"><span class="nav-icon">article</span><span>PR 時の視覚確認方針</span></a>
+<a href="./versioning.html"><span class="nav-icon">article</span><span>設計書のバージョン管理</span></a></nav>
+    </aside>
+    <div class="page-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Markdown / UML / Architecture</p>
+          <div class="page-title">Material Design Docs サンプルポータル</div>
+        </div>
+        <span class="github-chip"><span class="nav-icon">code</span>v0.3.0 / 83c13c9</span>
+      </header>
+      <main class="content"><article class="doc-card"><h1 id="material-design-docs-サンプルポータル">Material Design Docs サンプルポータル</h1>
+<p>このリポジトリは、設計書を <strong>Markdown</strong> で管理し、GitHub Pages に静的サイトとして公開する検証用のサンプルです。UI は Material Design の考え方を参考に、読みやすい余白、角丸カード、サイドナビ、状態が分かるナビゲーションを備えたドキュメントサイトとして生成します。</p>
+<h2 id="検証ポイント">検証ポイント</h2>
+<ul>
+<li>設計書本文は Markdown でレビュー・履歴管理する</li>
+<li>UML 図は PlantUML のコードブロックまたは <code>.puml</code> ファイルで管理する</li>
+<li>システム構成図は Mermaid / PlantUML / 画像ファイルを用途に応じて使い分ける</li>
+<li>画像は <code>docs/assets/images/</code> に配置して Markdown から参照する</li>
+<li>GitHub Pages では Material Design 風の静的 HTML として公開する</li>
+<li>PR ではビルド済み HTML を artifact として確認し、必要に応じてスクリーンショット差分を追加する</li>
+</ul>
+<h2 id="ドキュメント一覧">ドキュメント一覧</h2>
+<ul>
+<li><a href="architecture/sample-ec-service.html">サンプル EC サービス設計書</a></li>
+<li><a href="pr-visual-review.html">PR 時の視覚確認方針</a></li>
+<li><a href="versioning.html">設計書のバージョン管理</a></li>
+</ul>
+<h2 id="デザイン方針">デザイン方針</h2>
+<table>
+<tr><th>観点</th><th>方針</th></tr>
+<tr><td>視認性</td><td>本文領域をカード化し、見出しと表のコントラストを高める</td></tr>
+<tr><td>操作性</td><td>サイドナビに現在ページのハイライトを表示する</td></tr>
+<tr><td>一貫性</td><td>PlantUML、Mermaid、画像、表を同じ Material 風トーンで表示する</td></tr>
+<tr><td>保守性</td><td>CSS とビルドスクリプトのみで完結し、Markdown の管理方法は変えない</td></tr>
+</table>
+<h2 id="運用イメージ">運用イメージ</h2>
+<ol>
+<li>設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。</li>
+<li>Pull Request を作成する。</li>
+<li>GitHub Actions で静的サイトをビルドする。</li>
+<li>PR コメントの Preview URL から HTML 表示と <code>version.json</code> を確認する。</li>
+<li>権限や Pages 設定で URL が使えない場合は artifact をフォールバックにする。</li>
+<li>main ブランチにマージ後、GitHub Pages の production ルートに公開する。</li>
+</ol></article><footer class="version-footer"><span>Docs v0.3.0</span><span>5/merge @ 83c13c9</span><span>Built 2026-06-10T19:41:49Z</span></footer></main>
+    </div>
+  </div>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
+  </script>
+</body>
+</html>
