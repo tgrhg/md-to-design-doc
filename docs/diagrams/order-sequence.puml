@@ -1,18 +1,66 @@
 @startuml
+hide footbox
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam roundcorner 14
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 34
+skinparam ArrowColor #4F46E5
+skinparam ArrowFontColor #1E293B
+skinparam ArrowFontSize 13
+skinparam LifeLineBorderColor #CBD5E1
+skinparam LifeLineBackgroundColor #F8FAFC
+skinparam ActorBorderColor #4F46E5
+skinparam ActorBackgroundColor #EEF2FF
+skinparam ActorFontColor #312E81
+skinparam ParticipantBorderColor #4F46E5
+skinparam ParticipantBackgroundColor #FFFFFF
+skinparam ParticipantFontColor #0F172A
+skinparam DatabaseBorderColor #0891B2
+skinparam DatabaseBackgroundColor #ECFEFF
+skinparam DatabaseFontColor #164E63
+skinparam BoxBorderColor #CBD5E1
+skinparam BoxBackgroundColor #F8FAFC
+skinparam SequenceBoxBorderColor #CBD5E1
+skinparam SequenceBoxBackgroundColor #F8FAFC
+
+title 注文作成シーケンス v0.3
+caption フロー、外部連携、保存ポイントをシンプルな配色で表示
+
 actor Customer as customer
+box "Experience" #F8FAFC
 participant "Web Frontend" as web
+end box
+box "Core API" #F8FAFC
 participant "Backend API" as api
 participant "Order Service" as order
+end box
+box "External / Data" #F8FAFC
 participant "Payment Gateway" as payment
 database "Order DB" as db
+end box
 
 customer -> web : 注文内容を送信
+activate web #EEF2FF
 web -> api : POST /orders
+activate api #EEF2FF
 api -> order : createOrder()
+activate order #EEF2FF
+
 order -> payment : authorize()
+activate payment #ECFEFF
 payment --> order : authorizationId
+deactivate payment
+
 order -> db : insert order
+activate db #ECFEFF
+db --> order : persisted
+deactivate db
+
 order --> api : orderId
+deactivate order
 api --> web : 201 Created
+deactivate api
 web --> customer : 注文完了画面を表示
+deactivate web
 @enduml

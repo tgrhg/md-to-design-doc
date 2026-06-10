@@ -9,7 +9,12 @@ npm test
 python3 -m http.server 8000 -d site
 ```
 
-ブラウザで <http://localhost:8000> を開くと、生成された設計書サイトを確認できます。
+ブラウザで <http://localhost:8000> を開くと、生成された設計書サイトを確認できます。ヘッダー、フッター、`site/version.json` にはドキュメント版、Git ref、短縮 SHA、ビルド時刻が表示されます。
+
+
+## PR Preview URL
+
+PR の HTML をダウンロードせずに確認したい場合は、GitHub Pages の公開元を **Deploy from a branch / `gh-pages` / root** に設定します。workflow は production を `gh-pages` のルートに、PR preview を `gh-pages/previews/pr-<番号>/` に公開し、PR コメントへ Preview URL を投稿します。
 
 ## 対応している表現
 
@@ -19,7 +24,9 @@ python3 -m http.server 8000 -d site
 - Mermaid によるシステム構成図
 - `docs/assets/images/` 配下の画像参照
 - Material Design 風のサイドナビ、カード、テーブル、コードブロック
-- PR ごとの HTML artifact による視覚確認
+- Material Design 風のフレームと PlantUML テーマによる見やすい UML 図
+- `site/version.json` と画面フッターによる生成元バージョンの確認
+- PR ごとの Pages Preview URL と HTML artifact による視覚確認
 
 ## ディレクトリ構成
 
@@ -29,6 +36,7 @@ docs/
   architecture/sample-ec-service.md
   diagrams/order-sequence.puml
   assets/images/sample-system-context.svg
+  versioning.md
 scripts/build-site.mjs
 .github/workflows/pages.yml
 ```
