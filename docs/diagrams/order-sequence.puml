@@ -1,0 +1,40 @@
+@startuml
+hide footbox
+box "Customer touchpoint" #FEF7FF
+actor Customer as customer
+participant "Web Frontend" as web
+end box
+box "Order backend" #F7F2FA
+participant "Backend API" as api
+participant "Order Service" as order
+database "Order DB" as db
+queue "Order Events" as events
+end box
+box "External service" #FFF8F8
+participant "Payment Gateway" as payment
+end box
+
+customer -> web : 注文確定
+activate web
+web -> api : POST /orders
+activate api
+api -> order : createOrder(cartId, paymentToken)
+activate order
+order -> payment : authorize(amount, token)
+activate payment
+payment --> order : authorizationId
+deactivate payment
+order -> db : insert order
+order -> events : publish OrderCreated
+order --> api : orderId
+deactivate order
+api --> web : 201 Created
+web --> customer : 注文完了画面
+deactivate api
+deactivate web
+
+note right of events
+  通知 Worker が購読し、
+  メールと監査ログへ連携する。
+end note
+@enduml

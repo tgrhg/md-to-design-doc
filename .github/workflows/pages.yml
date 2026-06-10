@@ -1,0 +1,174 @@
+name: design-docs-pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pages-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  build:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Build design docs
+        run: npm test
+      - name: Upload built site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-docs-site
+          path: site
+
+  deploy-main:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.urls.outputs.main_url }}
+    steps:
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: design-docs-site
+          path: site
+      - name: Checkout GitHub Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+      - name: Publish main site while preserving PR previews
+        run: |
+          if [ ! -d gh-pages/.git ]; then
+            mkdir -p gh-pages
+            git -C gh-pages init
+            git -C gh-pages checkout -b gh-pages
+            git -C gh-pages remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          fi
+          rsync -av --delete --exclude '.git/' --exclude 'previews/' site/ gh-pages/
+          touch gh-pages/.nojekyll
+          git -C gh-pages config user.name 'github-actions[bot]'
+          git -C gh-pages config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C gh-pages add -A
+          if git -C gh-pages diff --cached --quiet; then
+            echo 'No changes to publish.'
+          else
+            git -C gh-pages commit -m 'Deploy main design docs'
+            git -C gh-pages push origin gh-pages
+          fi
+      - name: Resolve Pages URL
+        id: urls
+        run: echo "main_url=https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/" >> "$GITHUB_OUTPUT"
+
+  deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pr-preview-${{ github.event.pull_request.number }}
+      url: ${{ steps.urls.outputs.preview_url }}
+    steps:
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: design-docs-site
+          path: site
+      - name: Checkout GitHub Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+      - name: Publish PR preview without replacing main site
+        run: |
+          if [ ! -d gh-pages/.git ]; then
+            mkdir -p gh-pages
+            git -C gh-pages init
+            git -C gh-pages checkout -b gh-pages
+            git -C gh-pages remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          fi
+          preview_dir="gh-pages/previews/pr-${{ github.event.pull_request.number }}"
+          mkdir -p "$preview_dir"
+          rsync -av --delete site/ "$preview_dir/"
+          touch gh-pages/.nojekyll
+          git -C gh-pages config user.name 'github-actions[bot]'
+          git -C gh-pages config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C gh-pages add -A
+          if git -C gh-pages diff --cached --quiet; then
+            echo 'No preview changes to publish.'
+          else
+            git -C gh-pages commit -m 'Deploy design docs preview for PR #${{ github.event.pull_request.number }}'
+            git -C gh-pages push origin gh-pages
+          fi
+      - name: Resolve preview URLs
+        id: urls
+        run: |
+          base="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          echo "preview_url=${base}/previews/pr-${{ github.event.pull_request.number }}/" >> "$GITHUB_OUTPUT"
+          echo "main_url=${base}/" >> "$GITHUB_OUTPUT"
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = '${{ steps.urls.outputs.preview_url }}';
+            const mainUrl = '${{ steps.urls.outputs.main_url }}';
+            const marker = '<!-- design-docs-preview-url -->';
+            const body = `${marker}\n## Design Docs Preview\n\n- PR preview: ${previewUrl}\n- Current main site: ${mainUrl}\n\nThe preview is published under \`/previews/pr-${context.issue.number}/\`, so it does not replace the main GitHub Pages site.`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find((comment) => comment.user.type === 'Bot' && comment.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner: context.repo.owner, repo: context.repo.repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body });
+            }
+
+  cleanup-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitHub Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+        continue-on-error: true
+      - name: Remove PR preview
+        run: |
+          if [ ! -d gh-pages/.git ]; then
+            echo 'No gh-pages branch exists yet.'
+            exit 0
+          fi
+          rm -rf "gh-pages/previews/pr-${{ github.event.pull_request.number }}"
+          git -C gh-pages config user.name 'github-actions[bot]'
+          git -C gh-pages config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C gh-pages add -A
+          if git -C gh-pages diff --cached --quiet; then
+            echo 'No preview directory to remove.'
+          else
+            git -C gh-pages commit -m 'Remove design docs preview for PR #${{ github.event.pull_request.number }}'
+            git -C gh-pages push origin gh-pages
+          fi
