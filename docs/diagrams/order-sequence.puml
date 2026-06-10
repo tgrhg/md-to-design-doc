@@ -1,18 +1,63 @@
 @startuml
+!theme spacelab
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+skinparam ParticipantPadding 24
+skinparam BoxPadding 12
+skinparam ArrowColor #6750A4
+skinparam LifeLineBorderColor #CAC4D0
+skinparam LifeLineBackgroundColor #F7F2FA
+skinparam ActorBorderColor #6750A4
+skinparam ActorBackgroundColor #EADDFF
+skinparam ActorFontColor #21005D
+skinparam ParticipantBorderColor #6750A4
+skinparam ParticipantBackgroundColor #F8F5FF
+skinparam ParticipantFontColor #1D1B20
+skinparam DatabaseBorderColor #006A6A
+skinparam DatabaseBackgroundColor #D7F8F6
+skinparam DatabaseFontColor #002020
+skinparam SequenceGroupBorderColor #6750A4
+skinparam SequenceGroupBackgroundColor #F7F2FA
+
+title 注文作成シーケンス v0.2
+caption 主要な同期処理と保存ポイントをレビューしやすい色分けで表現
+
 actor Customer as customer
+box "Frontend" #F7F2FA
 participant "Web Frontend" as web
+end box
+box "Backend" #F8F5FF
 participant "Backend API" as api
 participant "Order Service" as order
+end box
+box "External / Data" #F3FBF9
 participant "Payment Gateway" as payment
 database "Order DB" as db
+end box
 
 customer -> web : 注文内容を送信
+activate web
 web -> api : POST /orders
+activate api
 api -> order : createOrder()
+activate order
+
 order -> payment : authorize()
+activate payment
 payment --> order : authorizationId
+deactivate payment
+
 order -> db : insert order
+activate db
+db --> order : persisted
+deactivate db
+
 order --> api : orderId
+deactivate order
 api --> web : 201 Created
+deactivate api
 web --> customer : 注文完了画面を表示
+deactivate web
 @enduml

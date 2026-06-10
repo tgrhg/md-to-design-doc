@@ -1,10 +1,12 @@
 import { deflateRawSync } from 'node:zlib';
 import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync, copyFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const root = process.cwd();
 const docsDir = path.join(root, 'docs');
 const siteDir = path.join(root, 'site');
+const packageJson = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
 
 const plantUmlAlphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
 
@@ -39,6 +41,28 @@ function plantUmlUrl(source) {
   return `https://www.plantuml.com/plantuml/svg/${encodePlantUml(source)}`;
 }
 
+function getGitValue(args, fallback = '') {
+  try {
+    return execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+  } catch {
+    return fallback;
+  }
+}
+
+function buildMetadata() {
+  const sha = process.env.GITHUB_SHA || getGitValue(['rev-parse', 'HEAD'], 'local');
+  const shortSha = sha === 'local' ? 'local' : sha.slice(0, 7);
+  return {
+    docVersion: packageJson.version,
+    buildTime: process.env.BUILD_TIME || new Date().toISOString(),
+    refName: process.env.GITHUB_REF_NAME || getGitValue(['branch', '--show-current'], 'local'),
+    sha,
+    shortSha,
+  };
+}
+
+const metadata = buildMetadata();
+
 function escapeHtml(value) {
   return value
     .replaceAll('&', '&amp;')
@@ -47,19 +71,24 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
+function renderImage(alt, src, currentDir) {
+  let resolved = src;
+  const isPlantUml = src.endsWith('.puml.svg');
+  if (isPlantUml) {
+    const pumlPath = path.resolve(currentDir, src.replace(/\.svg$/, ''));
+    if (existsSync(pumlPath)) {
+      resolved = plantUmlUrl(readFileSync(pumlPath, 'utf8'));
+    }
+  }
+  const img = `<img src="${escapeHtml(resolved)}" alt="${escapeHtml(alt)}">`;
+  if (!isPlantUml) return img;
+  return `<figure class="diagram-card plantuml-card">${img}<figcaption><span class="nav-icon">account_tree</span>${escapeHtml(alt || 'PlantUML diagram')}</figcaption></figure>`;
+}
+
 function inlineMarkdown(value, currentDir) {
   let out = escapeHtml(value);
   out = out.replace(/`([^`]+)`/g, '<code>$1</code>');
-  out = out.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
-    let resolved = src;
-    if (src.endsWith('.puml.svg')) {
-      const pumlPath = path.resolve(currentDir, src.replace(/\.svg$/, ''));
-      if (existsSync(pumlPath)) {
-        resolved = plantUmlUrl(readFileSync(pumlPath, 'utf8'));
-      }
-    }
-    return `<img src="${escapeHtml(resolved)}" alt="${escapeHtml(alt)}">`;
-  });
+  out = out.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => renderImage(alt, src, currentDir));
   out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => {
     const resolved = href.endsWith('.md') ? href.replace(/\.md$/, '.html') : href;
     return `<a href="${escapeHtml(resolved)}">${text}</a>`;
@@ -121,7 +150,7 @@ function renderMarkdown(markdown, sourcePath) {
     if (fence && inFence) {
       const code = fenceLines.join('\n');
       if (fenceLang === 'plantuml') {
-        html.push(`<figure><img src="${plantUmlUrl(code)}" alt="PlantUML diagram"><figcaption>PlantUML diagram</figcaption></figure>`);
+        html.push(`<figure class="diagram-card plantuml-card"><img src="${plantUmlUrl(code)}" alt="PlantUML diagram"><figcaption><span class="nav-icon">account_tree</span>PlantUML diagram</figcaption></figure>`);
       } else if (fenceLang === 'mermaid') {
         html.push(`<pre class="mermaid">${escapeHtml(code)}</pre>`);
       } else {
@@ -139,6 +168,13 @@ function renderMarkdown(markdown, sourcePath) {
 
     if (!line.trim()) {
       closeBlocks();
+      continue;
+    }
+
+    const imageOnly = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imageOnly) {
+      closeBlocks();
+      html.push(renderImage(imageOnly[1], imageOnly[2], currentDir));
       continue;
     }
 
@@ -263,14 +299,14 @@ function pageTemplate(title, body, currentRel) {
           <p class="eyebrow">Markdown / UML / Architecture</p>
           <div class="page-title">${escapeHtml(title)}</div>
         </div>
-        <span class="github-chip"><span class="nav-icon">code</span>GitHub Pages Ready</span>
+        <span class="github-chip"><span class="nav-icon">code</span>v${metadata.docVersion} / ${escapeHtml(metadata.shortSha)}</span>
       </header>
-      <main class="content"><article class="doc-card">${body}</article></main>
+      <main class="content"><article class="doc-card">${body}</article><footer class="version-footer"><span>Docs v${metadata.docVersion}</span><span>${escapeHtml(metadata.refName)} @ ${escapeHtml(metadata.shortSha)}</span><span>Built ${escapeHtml(metadata.buildTime)}</span></footer></main>
     </div>
   </div>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#eaddff', primaryTextColor: '#1d1b20', lineColor: '#6750a4' } });
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
   </script>
 </body>
 </html>`;
@@ -288,6 +324,8 @@ const siteCss = `:root {
   --md-sys-color-primary-container: #eaddff;
   --md-sys-color-on-primary-container: #21005d;
   --md-sys-color-secondary-container: #e8def8;
+  --md-sys-color-tertiary-container: #ffd8e4;
+  --md-sys-color-info-container: #d7e3ff;
   --md-sys-color-surface: #fffbfe;
   --md-sys-color-surface-container: #f3edf7;
   --md-sys-color-surface-container-high: #ece6f0;
@@ -527,6 +565,38 @@ img {
   box-shadow: var(--md-sys-elevation-1);
 }
 
+.diagram-card {
+  position: relative;
+  padding: clamp(18px, 3vw, 28px);
+  overflow: hidden;
+  border: 1px solid rgb(103 80 164 / 22%);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 12% 0%, rgb(234 221 255 / 80%), transparent 18rem),
+    linear-gradient(135deg, #ffffff 0%, #f8f5ff 48%, #fef7ff 100%);
+  box-shadow: 0 12px 32px rgb(103 80 164 / 14%);
+}
+
+.diagram-card::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background-image:
+    linear-gradient(rgb(103 80 164 / 7%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(103 80 164 / 7%) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(135deg, black, transparent 72%);
+}
+
+.diagram-card img {
+  position: relative;
+  margin: 0 auto;
+  border-color: rgb(103 80 164 / 18%);
+  border-radius: 22px;
+  box-shadow: 0 8px 24px rgb(29 27 32 / 12%);
+}
+
 pre {
   padding: 18px 20px;
   overflow: auto;
@@ -590,6 +660,35 @@ figcaption {
   margin-top: 10px;
 }
 
+.diagram-card figcaption {
+  position: relative;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  color: var(--md-sys-color-on-primary-container);
+  background: rgb(234 221 255 / 86%);
+  border: 1px solid rgb(103 80 164 / 18%);
+  border-radius: 999px;
+}
+
+.version-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .82rem;
+}
+
+.version-footer span {
+  padding: 6px 10px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  background: rgb(255 251 254 / 72%);
+}
+
 @media (max-width: 920px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -630,6 +729,7 @@ figcaption {
 `;
 
 writeFileSync(path.join(siteDir, 'assets', 'site.css'), siteCss);
+writeFileSync(path.join(siteDir, 'version.json'), JSON.stringify(metadata, null, 2) + '\n');
 
 for (const mdFile of walk(docsDir, (file) => file.endsWith('.md'))) {
   const markdown = readFileSync(mdFile, 'utf8');

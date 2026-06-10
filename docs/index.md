@@ -15,6 +15,7 @@
 
 - [サンプル EC サービス設計書](architecture/sample-ec-service.md)
 - [PR 時の視覚確認方針](pr-visual-review.md)
+- [設計書のバージョン管理](versioning.md)
 
 ## デザイン方針
 
@@ -30,5 +31,6 @@
 1. 設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。
 2. Pull Request を作成する。
 3. GitHub Actions で静的サイトをビルドする。
-4. PR の artifact から HTML 表示を確認する。
-5. main ブランチにマージ後、GitHub Pages に公開する。
+4. PR の artifact から HTML 表示と `version.json` を確認する。
+5. 必要に応じて PR Preview URL の方式を選択する。
+6. main ブランチにマージ後、GitHub Pages に公開する。
