@@ -271,8 +271,29 @@ function navItems(currentRel) {
     .join('\n');
 }
 
+function versionsPanel(currentRel) {
+  if (currentRel !== 'index.html') return '';
+  return `<section class="version-card" aria-labelledby="published-versions-title">
+  <div>
+    <p class="eyebrow">Published versions</p>
+    <h2 id="published-versions-title">公開済みバージョン</h2>
+    <p>現在公開中の production と、レビュー用に公開された PR preview を一覧できます。</p>
+  </div>
+  <div id="published-versions" class="version-list" data-current-version="${escapeHtml(metadata.docVersion)}" data-current-ref="${escapeHtml(metadata.refName)}" data-current-sha="${escapeHtml(metadata.shortSha)}" data-current-built="${escapeHtml(metadata.buildTime)}" data-versions-url="${relativeHref(currentRel, 'previews/versions.json')}">
+    <a class="version-item production" href="${relativeHref(currentRel, 'index.html')}">
+      <span class="version-kind"><span class="nav-icon">rocket_launch</span>Production</span>
+      <strong>Docs v${escapeHtml(metadata.docVersion)}</strong>
+      <small>${escapeHtml(metadata.refName)} @ ${escapeHtml(metadata.shortSha)}</small>
+      <small>Built ${escapeHtml(metadata.buildTime)}</small>
+    </a>
+    <p class="version-empty">PR preview の履歴を確認しています...</p>
+  </div>
+</section>`;
+}
+
 function pageTemplate(title, body, currentRel) {
   const cssHref = relativeHref(currentRel, 'assets/site.css');
+  const versionPanel = versionsPanel(currentRel);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -301,12 +322,47 @@ function pageTemplate(title, body, currentRel) {
         </div>
         <span class="github-chip"><span class="nav-icon">code</span>v${metadata.docVersion} / ${escapeHtml(metadata.shortSha)}</span>
       </header>
-      <main class="content"><article class="doc-card">${body}</article><footer class="version-footer"><span>Docs v${metadata.docVersion}</span><span>${escapeHtml(metadata.refName)} @ ${escapeHtml(metadata.shortSha)}</span><span>Built ${escapeHtml(metadata.buildTime)}</span></footer></main>
+      <main class="content"><article class="doc-card">${body}</article>${versionPanel}<footer class="version-footer"><span>Docs v${metadata.docVersion}</span><span>${escapeHtml(metadata.refName)} @ ${escapeHtml(metadata.shortSha)}</span><span>Built ${escapeHtml(metadata.buildTime)}</span></footer></main>
     </div>
   </div>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
+
+    const versions = document.querySelector('#published-versions');
+    if (versions) {
+      const escapeText = (value) => String(value ?? '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+      const renderPreview = (preview) => {
+        const title = preview.title || 'PR #' + preview.prNumber;
+        const ref = preview.refName || preview.headRefName || 'preview';
+        const sha = preview.shortSha || (preview.sha ? String(preview.sha).slice(0, 7) : 'unknown');
+        const built = preview.buildTime || preview.updatedAt || '';
+        return '<a class="version-item" href="' + escapeText(preview.url) + '">'
+          + '<span class="version-kind"><span class="nav-icon">preview</span>PR Preview</span>'
+          + '<strong>' + escapeText(title) + '</strong>'
+          + '<small>' + escapeText(ref) + ' @ ' + escapeText(sha) + '</small>'
+          + '<small>' + escapeText(built) + '</small>'
+          + '</a>';
+      };
+
+      fetch(versions.dataset.versionsUrl, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : { previews: [] })
+        .then((data) => {
+          const previews = Array.isArray(data) ? data : (data.previews || []);
+          const validPreviews = previews.filter((preview) => preview && preview.url);
+          const empty = versions.querySelector('.version-empty');
+          if (!validPreviews.length) {
+            if (empty) empty.textContent = '公開中の PR preview はまだありません。';
+            return;
+          }
+          if (empty) empty.remove();
+          versions.insertAdjacentHTML('beforeend', validPreviews.map(renderPreview).join(''));
+        })
+        .catch(() => {
+          const empty = versions.querySelector('.version-empty');
+          if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+        });
+    }
   </script>
 </body>
 </html>`;
@@ -667,6 +723,88 @@ figcaption {
   background: #f8fafc;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 999px;
+}
+
+.version-card {
+  display: grid;
+  gap: 20px;
+  margin-top: 24px;
+  padding: clamp(24px, 4vw, 42px);
+  background: rgb(255 255 255 / 88%);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 30px;
+  box-shadow: var(--md-sys-elevation-1);
+}
+
+.version-card h2 {
+  margin: 0 0 .4rem;
+  padding: 0;
+  border: 0;
+}
+
+.version-card p {
+  margin: 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.version-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.version-item {
+  display: grid;
+  gap: 6px;
+  min-height: 150px;
+  padding: 18px;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: var(--md-sys-elevation-1);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.version-item:hover {
+  border-color: rgb(79 70 229 / 34%);
+  box-shadow: 0 18px 34px rgb(15 23 42 / 10%);
+  transform: translateY(-2px);
+}
+
+.version-item.production {
+  background: linear-gradient(135deg, #ffffff, var(--md-sys-color-primary-container));
+}
+
+.version-kind {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 9px;
+  color: var(--md-sys-color-primary);
+  font-size: .78rem;
+  font-weight: 800;
+  border: 1px solid rgb(79 70 229 / 18%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+}
+
+.version-item strong {
+  font-size: 1.04rem;
+}
+
+.version-item small {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.version-empty {
+  align-self: center;
+  padding: 18px;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 18px;
+  background: var(--md-sys-color-surface-container);
 }
 
 .version-footer {
