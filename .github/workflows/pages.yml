@@ -4,18 +4,26 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, reopened, synchronize, closed]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  issues: write
+  pull-requests: write
 
 env:
   NODE_VERSION: '22'
+  PAGES_BRANCH: gh-pages
+  PREVIEW_ROOT: previews
+
+concurrency:
+  group: pages-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,28 +32,93 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - name: Capture build time
+        run: echo "BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
       - name: Build design docs
         run: npm test
-      - name: Upload PR preview artifact
-        if: github.event_name == 'pull_request'
+      - name: Upload built site artifact
         uses: actions/upload-artifact@v4
         with:
           name: design-docs-site
           path: site
-      - name: Upload Pages artifact
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
 
-  deploy:
+  deploy-production:
     if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download built site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: design-docs-site
+          path: site
+      - name: Publish production site to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ env.PAGES_BRANCH }}
+          folder: site
+          clean: true
+          clean-exclude: ${{ env.PREVIEW_ROOT }}
+          commit-message: 'Deploy production docs from ${{ github.sha }}'
+
+  deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download built site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: design-docs-site
+          path: site
+      - name: Publish PR preview to gh-pages subpath
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: ${{ env.PAGES_BRANCH }}
+          publish_dir: ./site
+          destination_dir: ${{ env.PREVIEW_ROOT }}/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+          full_commit_message: 'Deploy PR #${{ github.event.pull_request.number }} preview from ${{ github.event.pull_request.head.sha }}'
+      - name: Comment preview URL
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_ROOT: ${{ env.PREVIEW_ROOT }}
+          PAGES_BRANCH: ${{ env.PAGES_BRANCH }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const repoPath = repo === `${owner}.github.io` ? '' : `/${repo}`;
+            const previewUrl = `https://${owner}.github.io${repoPath}/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/`;
+            const marker = '<!-- design-docs-preview-url -->';
+            const body = `${marker}\n### Design Docs Preview\n\nPR の HTML はダウンロード不要で確認できます。\n\n🔎 **Preview:** ${previewUrl}\n\n- Production はルート URL のまま維持し、この PR は \`/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/\` に別バージョンとして公開します。\n- GitHub Pages の公開元は **Deploy from a branch / \`${process.env.PAGES_BRANCH || 'gh-pages'}\` / root** に設定してください。`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const previous = comments.find((comment) => comment.user.type === 'Bot' && comment.body.includes(marker));
+            if (previous) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: previous.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number: context.issue.number, body });
+            }
+
+  cleanup-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare empty preview directory
+        run: mkdir -p empty-preview
+      - name: Remove PR preview subpath
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: ${{ env.PAGES_BRANCH }}
+          publish_dir: ./empty-preview
+          destination_dir: ${{ env.PREVIEW_ROOT }}/pr-${{ github.event.pull_request.number }}
+          keep_files: true
+          full_commit_message: 'Remove PR #${{ github.event.pull_request.number }} preview'

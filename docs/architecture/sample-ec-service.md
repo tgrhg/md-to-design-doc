@@ -33,14 +33,41 @@ PlantUML は UML として厳密に管理したい図に向いています。以
 
 ```plantuml
 @startuml
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam roundcorner 14
 skinparam componentStyle rectangle
+skinparam ArrowColor #4F46E5
+skinparam ArrowFontColor #1E293B
+skinparam ComponentBorderColor #4F46E5
+skinparam ComponentBackgroundColor #FFFFFF
+skinparam ComponentFontColor #0F172A
+skinparam DatabaseBorderColor #0891B2
+skinparam DatabaseBackgroundColor #ECFEFF
+skinparam QueueBorderColor #BE185D
+skinparam QueueBackgroundColor #FCE7F3
+skinparam ActorBorderColor #4F46E5
+skinparam ActorBackgroundColor #EEF2FF
+skinparam ActorFontColor #312E81
+skinparam PackageBorderColor #CBD5E1
+skinparam PackageBackgroundColor #F8FAFC
+
+title サンプルECサービス コンポーネント構成 v0.3
+caption 境界と依存方向を淡いニュートラルカラーで整理
+
 actor Customer as customer
-component "Web Frontend" as web
-component "Backend API" as api
-component "Order Service" as order
-component "Payment Adapter" as payment
-database "Order DB" as db
-queue "Order Events" as queue
+package "Experience" {
+  component "Web Frontend" as web
+}
+package "Core API" {
+  component "Backend API" as api
+  component "Order Service" as order
+}
+package "Integration" {
+  component "Payment Adapter" as payment
+  database "Order DB" as db
+  queue "Order Events" as queue
+}
 
 customer --> web : 商品検索・注文
 web --> api : REST API
@@ -74,7 +101,16 @@ PlantUML ソース: [`docs/diagrams/order-sequence.puml`](../diagrams/order-sequ
 | セキュリティ | 管理画面は SSO 必須 | 監査ログを保存する |
 | 運用 | 障害通知は 5 分以内 | 監視アラートを ChatOps に連携する |
 
-## 8. ADR サンプル
+## 8. 図のバージョン管理サンプル
+
+| 対象 | 現行版 | 管理方法 | 確認ポイント |
+| --- | --- | --- | --- |
+| コンポーネント図 | v0.3 | Markdown 内の PlantUML ブロックを Git 管理 | パッケージ境界、依存方向、凡例の見やすさ |
+| 注文作成シーケンス | v0.3 | `docs/diagrams/order-sequence.puml` を Git 管理 | 同期処理、外部連携、永続化タイミング |
+
+設計書サイトのヘッダーとフッターには `package.json` のドキュメントバージョン、Git ref、短縮 SHA、ビルド時刻を表示します。PR では `site/version.json` も artifact に含まれるため、レビューした HTML がどのコミットから生成されたかを確認できます。
+
+## 9. ADR サンプル
 
 ### ADR-001: 図の管理方式
 
