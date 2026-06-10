@@ -1,0 +1,18 @@
+@startuml
+actor Customer as customer
+participant "Web Frontend" as web
+participant "Backend API" as api
+participant "Order Service" as order
+participant "Payment Gateway" as payment
+database "Order DB" as db
+
+customer -> web : 注文内容を送信
+web -> api : POST /orders
+api -> order : createOrder()
+order -> payment : authorize()
+payment --> order : authorizationId
+order -> db : insert order
+order --> api : orderId
+api --> web : 201 Created
+web --> customer : 注文完了画面を表示
+@enduml
