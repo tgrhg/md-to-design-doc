@@ -1,4 +1,17 @@
 {
-  "updatedAt": "2026-06-11T00:02:26.652Z",
-  "previews": []
+  "updatedAt": "2026-06-11T00:02:54.381Z",
+  "previews": [
+    {
+      "kind": "pr-preview",
+      "prNumber": 7,
+      "title": "Register PR previews in versions.json and add Versions sidebar to site",
+      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-7/",
+      "docVersion": "0.3.0",
+      "refName": "7/merge",
+      "sha": "fd663bae8969819816fec75fee05abb78ba7efc5",
+      "shortSha": "fd663ba",
+      "buildTime": "2026-06-11T00:02:45Z",
+      "updatedAt": "2026-06-11T00:02:54.381Z"
+    }
+  ]
 }
