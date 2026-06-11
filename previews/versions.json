@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-11T03:41:51.540Z",
+  "updatedAt": "2026-06-11T03:53:01.134Z",
   "previews": [
     {
       "kind": "pr-preview",
@@ -8,10 +8,10 @@
       "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-11/",
       "docVersion": "0.3.0",
       "refName": "11/merge",
-      "sha": "d0782c31a477b3e3ab8b121a7041617c7ef43b3b",
-      "shortSha": "d0782c3",
-      "buildTime": "2026-06-11T03:41:39Z",
-      "updatedAt": "2026-06-11T03:41:51.540Z"
+      "sha": "5afb62e9a4a8654e304f3bd1d1531e7cd6e05c7a",
+      "shortSha": "5afb62e",
+      "buildTime": "2026-06-11T03:52:44Z",
+      "updatedAt": "2026-06-11T03:53:01.134Z"
     }
   ]
 }
