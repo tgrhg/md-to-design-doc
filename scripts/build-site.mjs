@@ -286,7 +286,7 @@ function versionSidebar(currentRel) {
 }
 
 function pageTemplate(title, body, currentRel) {
-  const cssHref = relativeHref(currentRel, 'assets/site.css');
+  const cssHref = `${relativeHref(currentRel, 'assets/site.css')}?v=${encodeURIComponent(metadata.shortSha)}`;
   const sidebarVersions = versionSidebar(currentRel);
   return `<!doctype html>
 <html lang="ja">
@@ -749,11 +749,13 @@ figcaption {
 .sidebar-version-list {
   display: grid;
   gap: 8px;
+  min-width: 0;
 }
 
 .sidebar-version-item {
   display: grid;
   gap: 4px;
+  min-width: 0;
   padding: 12px;
   color: var(--md-sys-color-on-surface);
   text-decoration: none;
@@ -776,6 +778,7 @@ figcaption {
 
 .version-kind {
   display: inline-flex;
+  max-width: 100%;
   gap: 6px;
   align-items: center;
   width: fit-content;
@@ -789,6 +792,7 @@ figcaption {
 }
 
 .sidebar-version-item strong {
+  min-width: 0;
   overflow: hidden;
   font-size: .86rem;
   line-height: 1.35;
@@ -796,6 +800,7 @@ figcaption {
 }
 
 .sidebar-version-item small {
+  min-width: 0;
   overflow: hidden;
   color: var(--md-sys-color-on-surface-variant);
   font-size: .74rem;
