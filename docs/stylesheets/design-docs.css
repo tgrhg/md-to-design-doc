@@ -78,8 +78,28 @@
   border-color: var(--md-accent-fg-color);
 }
 
+.dd-version-card.dd-version-card--active {
+  color: #fff;
+  border-color: var(--md-primary-fg-color);
+  background: var(--md-primary-fg-color);
+  box-shadow: 0 0.35rem 0.9rem color-mix(in srgb, var(--md-primary-fg-color) 32%, transparent);
+}
+
+.dd-version-card.dd-version-card--active:hover {
+  border-color: var(--md-primary-fg-color);
+}
+
 .dd-version-card--production {
   background: color-mix(in srgb, var(--md-primary-fg-color) 8%, var(--md-default-bg-color));
+}
+
+.dd-version-card.dd-version-card--active small,
+.dd-version-card.dd-version-card--active .dd-version-kind {
+  color: rgb(255 255 255 / 86%);
+}
+
+.dd-version-card.dd-version-card--active .dd-version-kind {
+  border-color: rgb(255 255 255 / 36%);
 }
 
 .dd-version-kind {
