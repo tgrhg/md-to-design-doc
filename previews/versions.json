@@ -1,4 +1,17 @@
 {
-  "updatedAt": "2026-06-11T02:07:49.912Z",
-  "previews": []
+  "updatedAt": "2026-06-11T03:24:40.218Z",
+  "previews": [
+    {
+      "kind": "pr-preview",
+      "prNumber": 10,
+      "title": "Add dark mode toggle and slate palette styles",
+      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-10/",
+      "docVersion": "0.3.0",
+      "refName": "10/merge",
+      "sha": "952c465f66f37ab9c6080674547fdb4c13dbe47d",
+      "shortSha": "952c465",
+      "buildTime": "2026-06-11T03:24:27Z",
+      "updatedAt": "2026-06-11T03:24:40.218Z"
+    }
+  ]
 }
