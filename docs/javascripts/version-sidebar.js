@@ -34,10 +34,7 @@ function renderVersionItem(preview) {
     </a>`;
 }
 
-function mountVersionPanel(metadata) {
-  const sidebar = document.querySelector('.md-sidebar--primary .md-sidebar__scrollwrap');
-  if (!sidebar) return;
-
+function createVersionPanel(metadata) {
   const productionActiveClass = currentPreviewNumber === null ? ' dd-version-card--active' : '';
   const productionAriaCurrent = currentPreviewNumber === null ? ' aria-current="page"' : '';
   const panel = document.createElement('section');
@@ -50,24 +47,43 @@ function mountVersionPanel(metadata) {
       <small>${escapeText(metadata.shortSha || 'local')} / ${escapeText(metadata.refName || 'local')}</small>
     </a>
     <p class="dd-version-empty">PR preview を確認中...</p>`;
-  sidebar.append(panel);
+  return panel;
+}
+
+function updateVersionPanel(panel, previews) {
+  const validPreviews = previews.filter((preview) => preview && preview.url);
+  const empty = panel.querySelector('.dd-version-empty');
+  if (!validPreviews.length) {
+    if (empty) empty.textContent = '公開中の PR preview はまだありません。';
+    return;
+  }
+  if (empty) empty.remove();
+  panel.insertAdjacentHTML('beforeend', validPreviews.map(renderVersionItem).join(''));
+}
+
+function mountVersionPanel(metadata) {
+  const targets = document.querySelectorAll('.md-sidebar--primary .md-nav--primary');
+  const fallbackTarget = document.querySelector('.md-sidebar--primary .md-sidebar__scrollwrap');
+  const mountTargets = targets.length ? Array.from(targets) : (fallbackTarget ? [fallbackTarget] : []);
+  if (!mountTargets.length) return;
+
+  const panels = mountTargets.map((target) => {
+    const panel = createVersionPanel(metadata);
+    target.append(panel);
+    return panel;
+  });
 
   fetch(versionsUrl, { cache: 'no-store' })
     .then((response) => response.ok ? response.json() : { previews: [] })
     .then((data) => {
       const previews = Array.isArray(data) ? data : (data.previews || []);
-      const validPreviews = previews.filter((preview) => preview && preview.url);
-      const empty = panel.querySelector('.dd-version-empty');
-      if (!validPreviews.length) {
-        if (empty) empty.textContent = '公開中の PR preview はまだありません。';
-        return;
-      }
-      if (empty) empty.remove();
-      panel.insertAdjacentHTML('beforeend', validPreviews.map(renderVersionItem).join(''));
+      panels.forEach((panel) => updateVersionPanel(panel, previews));
     })
     .catch(() => {
-      const empty = panel.querySelector('.dd-version-empty');
-      if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+      panels.forEach((panel) => {
+        const empty = panel.querySelector('.dd-version-empty');
+        if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+      });
     });
 }
 
