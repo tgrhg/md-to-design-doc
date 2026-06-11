@@ -44,6 +44,7 @@ body {
   top: 0;
   height: 100vh;
   padding: 22px 16px;
+  overflow-y: auto;
   background: rgb(255 255 255 / 88%);
   border-right: 1px solid var(--md-sys-color-outline-variant);
   backdrop-filter: blur(22px);
@@ -348,6 +349,93 @@ figcaption {
   background: #f8fafc;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 999px;
+}
+
+.sidebar-versions {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.sidebar-section-title {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.sidebar-version-list {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar-version-item {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: var(--md-sys-elevation-1);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.sidebar-version-item:hover {
+  border-color: rgb(79 70 229 / 34%);
+  background: var(--md-sys-color-surface-container-high);
+  transform: translateX(2px);
+}
+
+.sidebar-version-item.production {
+  background: linear-gradient(135deg, #ffffff, var(--md-sys-color-primary-container));
+}
+
+.version-kind {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 8px;
+  color: var(--md-sys-color-primary);
+  font-size: .68rem;
+  font-weight: 800;
+  border: 1px solid rgb(79 70 229 / 18%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+}
+
+.sidebar-version-item strong {
+  overflow: hidden;
+  font-size: .86rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.sidebar-version-item small {
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .74rem;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+}
+
+.version-empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .78rem;
+  line-height: 1.55;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 14px;
+  background: var(--md-sys-color-surface-container);
 }
 
 .version-footer {

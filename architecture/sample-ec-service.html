@@ -20,6 +20,17 @@
 <a href="../index.html"><span class="nav-icon">article</span><span>Material Design Docs サンプルポータル</span></a>
 <a href="../pr-visual-review.html"><span class="nav-icon">article</span><span>PR 時の視覚確認方針</span></a>
 <a href="../versioning.html"><span class="nav-icon">article</span><span>設計書のバージョン管理</span></a></nav>
+      <section class="sidebar-versions" aria-labelledby="sidebar-versions-title">
+  <div class="sidebar-section-title" id="sidebar-versions-title"><span class="nav-icon">history</span><span>公開済みバージョン</span></div>
+  <div id="published-versions" class="sidebar-version-list" data-versions-url="../previews/versions.json">
+    <a class="sidebar-version-item production" href="../index.html">
+      <span class="version-kind"><span class="nav-icon">rocket_launch</span>Production</span>
+      <strong>Docs v0.3.0</strong>
+      <small>1c74b8d / main</small>
+    </a>
+    <p class="version-empty">PR preview を確認中...</p>
+  </div>
+</section>
     </aside>
     <div class="page-shell">
       <header class="topbar">
@@ -27,7 +38,7 @@
           <p class="eyebrow">Markdown / UML / Architecture</p>
           <div class="page-title">サンプル EC サービス設計書</div>
         </div>
-        <span class="github-chip"><span class="nav-icon">code</span>v0.3.0 / f94b371</span>
+        <span class="github-chip"><span class="nav-icon">code</span>v0.3.0 / 1c74b8d</span>
       </header>
       <main class="content"><article class="doc-card"><h1 id="サンプル-ec-サービス設計書">サンプル EC サービス設計書</h1>
 <h2 id="1-概要">1. 概要</h2>
@@ -81,12 +92,53 @@
 <li>ステータス: 採用</li>
 <li>決定: UML は PlantUML、軽量な構成図は Mermaid、外部作成図は画像として管理する</li>
 <li>理由: テキスト差分でレビューできる範囲を広げつつ、画像しか表現できない資料も共存させるため</li>
-</ul></article><footer class="version-footer"><span>Docs v0.3.0</span><span>main @ f94b371</span><span>Built 2026-06-10T19:43:36Z</span></footer></main>
+</ul></article><footer class="version-footer"><span>Docs v0.3.0</span><span>main @ 1c74b8d</span><span>Built 2026-06-11T00:05:10Z</span></footer></main>
     </div>
   </div>
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
+
+    const versions = document.querySelector('#published-versions');
+    if (versions) {
+      const escapeText = (value) => String(value ?? '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+      const renderPreview = (preview) => {
+        const title = preview.title || 'PR #' + preview.prNumber;
+        const ref = preview.refName || preview.headRefName || 'preview';
+        const sha = preview.shortSha || (preview.sha ? String(preview.sha).slice(0, 7) : 'unknown');
+        const built = preview.buildTime || preview.updatedAt || '';
+        return '<a class="sidebar-version-item" href="' + escapeText(preview.url) + '">'
+          + '<span class="version-kind"><span class="nav-icon">preview</span>PR Preview</span>'
+          + '<strong>' + escapeText(title) + '</strong>'
+          + '<small>' + escapeText(sha) + ' / ' + escapeText(ref) + '</small>'
+          + (built ? '<small>' + escapeText(built) + '</small>' : '')
+          + '</a>';
+      };
+
+      const manifestUrl = (() => {
+        const previewRoot = window.location.pathname.match(/^(.*/previews/pr-d+/)/);
+        if (previewRoot) return new URL('../versions.json', window.location.origin + previewRoot[1]).href;
+        return versions.dataset.versionsUrl;
+      })();
+
+      fetch(manifestUrl, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : { previews: [] })
+        .then((data) => {
+          const previews = Array.isArray(data) ? data : (data.previews || []);
+          const validPreviews = previews.filter((preview) => preview && preview.url);
+          const empty = versions.querySelector('.version-empty');
+          if (!validPreviews.length) {
+            if (empty) empty.textContent = '公開中の PR preview はまだありません。';
+            return;
+          }
+          if (empty) empty.remove();
+          versions.insertAdjacentHTML('beforeend', validPreviews.map(renderPreview).join(''));
+        })
+        .catch(() => {
+          const empty = versions.querySelector('.version-empty');
+          if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+        });
+    }
   </script>
 </body>
 </html>
