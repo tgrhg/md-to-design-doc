@@ -14,7 +14,7 @@
         <link rel="prev" href="../architecture/sample-ec-service.html">
       
       
-        <link rel="next" href="mkdocs-material-cheatsheet.html">
+        <link rel="next" href="documentation-generation.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -486,6 +486,29 @@
   
   
     <li class="md-nav__item">
+      <a href="documentation-generation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ドキュメント生成の仕組み
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="mkdocs-material-cheatsheet.html" class="md-nav__link">
         
   
@@ -673,6 +696,7 @@
 <h1 id="_1">設計書の変更・管理ガイド<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">目的<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>このページは、設計書を変更する Pull Request を作るときに「何を、どこに、どの粒度で、どう確認すればよいか」を判断するための運用ガイドです。Markdown、PlantUML、Mermaid、画像を Git で管理し、レビューでは <strong>設計内容の妥当性</strong> と <strong>生成されたサイトの読みやすさ</strong> の両方を確認します。</p>
+<p>設計書がどのように HTML 化され、GitHub Actions で自動公開されるかは <a href="documentation-generation.html">ドキュメント生成の仕組み</a> を参照してください。</p>
 <h2 id="_3">まず判断すること<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -737,16 +761,17 @@
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    │   └── sample-ec-service.md
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    ├── guides/                        # 設計書の書き方・運用ガイド
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    │   ├── design-doc-management.md
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │   └── mkdocs-material-cheatsheet.md
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    ├── diagrams/                      # 再利用する PlantUML ソース
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    │   └── order-sequence.puml
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    ├── assets/
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    │   └── images/                    # 画像アセット
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    │       └── sample-system-context.svg
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    ├── javascripts/                   # サイト固有の追加 JS
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    │   └── version-sidebar.js
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    └── stylesheets/                   # サイト固有の追加 CSS
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>        └── design-docs.css
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │   ├── documentation-generation.md
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    │   └── mkdocs-material-cheatsheet.md
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    ├── diagrams/                      # 再利用する PlantUML ソース
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    │   └── order-sequence.puml
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    ├── assets/
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    │   └── images/                    # 画像アセット
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    │       └── sample-system-context.svg
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    ├── javascripts/                   # サイト固有の追加 JS
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    │   └── version-sidebar.js
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    └── stylesheets/                   # サイト固有の追加 CSS
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        └── design-docs.css
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">迷ったときの置き場所</p>
@@ -760,6 +785,7 @@
 <li><strong>適切なファイルを更新する</strong></li>
 <li>設計本文は <code>docs/architecture/</code>、運用ルールは <code>docs/guides/</code>、共通図は <code>docs/diagrams/</code> を優先します。</li>
 <li><code>mkdocs.yml</code> の <code>nav</code> に追加しないとサイトのナビゲーションに表示されないため、新規ページを作ったら必ず確認します。</li>
+<li>生成・公開の流れを変える場合は、GitHub Actions workflow と <a href="documentation-generation.html">ドキュメント生成の仕組み</a> を同時に更新します。</li>
 <li><strong>図と本文を同時に更新する</strong></li>
 <li>図だけ、本文だけの変更は内容の不整合が起きやすいため、依存関係・責務・処理順序を本文にも記載します。</li>
 <li>大きな図は <code>title</code> や <code>caption</code> に図版を付け、何が変わったかを PR 説明に書きます。</li>

@@ -11,10 +11,10 @@
       
       
       
-        <link rel="prev" href="../index.html">
+        <link rel="prev" href="design-doc-management.html">
       
       
-        <link rel="next" href="../guides/design-doc-management.html">
+        <link rel="next" href="mkdocs-material-cheatsheet.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>サンプル EC サービス設計書 - Design Docs</title>
+        <title>ドキュメント生成の仕組み - Design Docs</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ec" class="md-skip">
+        <a href="#_1" class="md-skip">
           コンテンツにスキップ
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              サンプル EC サービス設計書
+              ドキュメント生成の仕組み
             
           </span>
         </div>
@@ -279,6 +279,96 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/sample-ec-service.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    サンプル EC サービス設計書
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    設計書運用ガイド
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            設計書運用ガイド
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="design-doc-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    設計書の変更・管理ガイド
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -296,7 +386,7 @@
   
   
   <span class="md-ellipsis">
-    サンプル EC サービス設計書
+    ドキュメント生成の仕組み
     
   </span>
   
@@ -304,12 +394,12 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="sample-ec-service.html" class="md-nav__link md-nav__link--active">
+      <a href="documentation-generation.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    サンプル EC サービス設計書
+    ドキュメント生成の仕組み
     
   </span>
   
@@ -332,91 +422,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 概要
+      全体像
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      2. スコープ
+      ローカル生成の流れ
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-mermaid" class="md-nav__link">
+  <a href="#mkdocs" class="md-nav__link">
     <span class="md-ellipsis">
-      3. システム構成図（Mermaid）
+      MkDocs が担当すること
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-plantuml" class="md-nav__link">
+  <a href="#github-actions" class="md-nav__link">
     <span class="md-ellipsis">
-      4. コンポーネント図（PlantUML）
+      GitHub Actions で自動生成する流れ
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-plantuml" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. シーケンス図（PlantUML ファイル管理）
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. 画像アセットの管理
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. 非機能要件サンプル
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. 図のバージョン管理サンプル
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-adr" class="md-nav__link">
-    <span class="md-ellipsis">
-      9. ADR サンプル
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. ADR サンプル">
+    <nav class="md-nav" aria-label="GitHub Actions で自動生成する流れ">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adr-001" class="md-nav__link">
+  <a href="#1-build-job" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-001: 図の管理方式
+      1. build job
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-production-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. production deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pr-preview-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. PR preview deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pr-preview-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. PR preview cleanup
     </span>
   </a>
   
@@ -427,6 +499,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      バージョン情報の見え方
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      変更時の注意点
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -434,71 +524,6 @@
     </li>
   
 
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    設計書運用ガイド
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            設計書運用ガイド
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/design-doc-management.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    設計書の変更・管理ガイド
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
               
             
               
@@ -508,30 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/documentation-generation.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ドキュメント生成の仕組み
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guides/mkdocs-material-cheatsheet.html" class="md-nav__link">
+      <a href="mkdocs-material-cheatsheet.html" class="md-nav__link">
         
   
   
@@ -625,91 +627,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 概要
+      全体像
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      2. スコープ
+      ローカル生成の流れ
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-mermaid" class="md-nav__link">
+  <a href="#mkdocs" class="md-nav__link">
     <span class="md-ellipsis">
-      3. システム構成図（Mermaid）
+      MkDocs が担当すること
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-plantuml" class="md-nav__link">
+  <a href="#github-actions" class="md-nav__link">
     <span class="md-ellipsis">
-      4. コンポーネント図（PlantUML）
+      GitHub Actions で自動生成する流れ
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-plantuml" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. シーケンス図（PlantUML ファイル管理）
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. 画像アセットの管理
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. 非機能要件サンプル
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#8" class="md-nav__link">
-    <span class="md-ellipsis">
-      8. 図のバージョン管理サンプル
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#9-adr" class="md-nav__link">
-    <span class="md-ellipsis">
-      9. ADR サンプル
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="9. ADR サンプル">
+    <nav class="md-nav" aria-label="GitHub Actions で自動生成する流れ">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#adr-001" class="md-nav__link">
+  <a href="#1-build-job" class="md-nav__link">
     <span class="md-ellipsis">
-      ADR-001: 図の管理方式
+      1. build job
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-production-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. production deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pr-preview-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. PR preview deploy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pr-preview-cleanup" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. PR preview cleanup
     </span>
   </a>
   
@@ -717,6 +701,24 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      バージョン情報の見え方
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      変更時の注意点
+    </span>
+  </a>
   
 </li>
       
@@ -739,109 +741,144 @@
   
 
 
-<h1 id="ec">サンプル EC サービス設計書<a class="headerlink" href="#ec" title="Permanent link">&para;</a></h1>
-<h2 id="1">1. 概要<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>サンプル EC サービスは、商品検索、カート、注文、決済を提供する Web アプリケーションです。本文は Markdown で管理し、図は用途に応じて PlantUML、Mermaid、画像ファイルを利用します。</p>
-<h2 id="2">2. スコープ<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<ul>
-<li>利用者向けの商品閲覧と注文</li>
-<li>管理者向けの商品・在庫管理</li>
-<li>外部決済サービスとの連携</li>
-<li>注文完了通知の送信</li>
-</ul>
-<h2 id="3-mermaid">3. システム構成図（Mermaid）<a class="headerlink" href="#3-mermaid" title="Permanent link">&para;</a></h2>
-<p>Mermaid は軽量な構成図やフロー図に向いています。GitHub 上の Markdown プレビューでも一定の確認ができます。</p>
+<h1 id="_1">ドキュメント生成の仕組み<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">全体像<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>このリポジトリでは、設計書の原稿を <code>docs/</code> 配下の Markdown、PlantUML、Mermaid、画像として管理し、<strong>MkDocs Material</strong> で静的 HTML サイトへ変換します。生成された <code>site/</code> ディレクトリは GitHub Actions によって artifact として保存され、main ブランチでは GitHub Pages の production サイトへ、Pull Request では PR preview として自動公開されます。</p>
 <pre class="mermaid"><code>flowchart LR
-  user[利用者ブラウザ] --&gt; cdn[CDN / WAF]
-  cdn --&gt; web[Web Frontend]
-  web --&gt; api[Backend API]
-  api --&gt; db[(Order DB)]
-  api --&gt; cache[(Redis Cache)]
-  api --&gt; payment[外部決済]
-  api --&gt; queue[Message Queue]
-  queue --&gt; mail[通知 Worker]</code></pre>
-<h2 id="4-plantuml">4. コンポーネント図（PlantUML）<a class="headerlink" href="#4-plantuml" title="Permanent link">&para;</a></h2>
-<p>PlantUML は UML として厳密に管理したい図に向いています。以下は Markdown 内に直接 PlantUML を書く例です。</p>
-<figure class="plantuml-card">
-  <img src="https://www.plantuml.com/plantuml/svg/VPHFJnD16CRlyoacvOnXMv3YmT1kPnDELZ7nFDqTwuPsPvsTjXBZeLq3JT049Q0cS92WO8W70aPHr0ypTF5ZE3FRfjCMtTFiFB_ttxDlTZ7YcF56lGQY5Jy8CSDrMC7kIfNHHk3Pj4OPv0m7aPH8m0qgUeGzslA3Ado8Qn4n51tgKXOG1grPGt1fFQI1JBFCLsi4Ck9o75HhPco1CTfAoqxDEhCtqTouwD20zm4BPHToHGEm1mMAb7c4_IlF41kRTChHptMeKNR6iUQp1GCgOOuhE28ZLMVo2rOnUnqrNXJP3XefUhT16gF9YiZApvKca8dsRJJlv4p7N4xP_yr8aOcUa9CTwKbZXWavAulobW6KPGfS7MtRBfRcq7NGHEDvf-3O072VoyKGdIyYFXNn6n4V8rk_NOXuItJEfNIgfJrzzLAVkydXHjBTXCsP6pdWuf3xD82z_VXg-uLe7rt-skjzVflidFSsNudEw-JhUz5-Bk8D4N_GEReY_YJhYCwnFbo8zc6oVNQrkGO0LZD3kn5nMfUxZ2FeziyWJ0U16VGa9CmdWKioy2c0mns7cGUa0XqcBIE1br7HBL81puQXDcK45ifB4u7A7XcJQZ8EX_ueS4Tv39S9Q_gghaIqwsRo9Lcsoh3oOY9_6Q_MrQ7WIRC8qmd2z4w2NdzF1sLAHGru5QazLcit451J1aHQrFUoF1WO1AUdRwjvuItOsrxhRRMJWzshitqH_qXEZvATTQ0qnSZP97CFBTzNumBrggxrF598wSkVk_83W_HIoVrk5N3oFVdM_VEndPnq3C2h38D_gmKmj7I8WImw1o9-bouIM9Isov_XNm00" alt="PlantUML diagram" />
-  <figcaption>PlantUML diagram</figcaption>
-</figure>
-
-<h2 id="5-plantuml">5. シーケンス図（PlantUML ファイル管理）<a class="headerlink" href="#5-plantuml" title="Permanent link">&para;</a></h2>
-<p>複数ドキュメントから再利用する図は <code>.puml</code> ファイルとして管理します。</p>
-<figure class="plantuml-card">
-  <img src="https://www.plantuml.com/plantuml/svg/XLNFJnD15BxlNp4f5pqe_GM21qDRTWq9XYQOU9xk3cL2krDdfxHuWcv0J3GXHj63750IYGOIvM10ZN_CqaB_2zzCTzlPKg2dcRxl-zwyxxsPdV44vg9UhHZBr25eYJ5HOat3Mw5k3NDSHILihvGvgxjEWLKOHu9ZruCGSOM6yfQnmnhKBQCbNF685b5Kct6NS9JAwXJol4vScpmXdeVB95UXPHVP84kuXghYPWXOf2y8okWAESvPetUgiQoLdJGdXeCMSqK8I9dfwKn-5409fp9QQ9ukaNdgaZpZ3k6XG24_Es6cHg6671gpfgoSLT1JsOBncDZLuoh8i99fMcdB6ePfLMLIQNDAFrGHkabjMiEkk3cX3hnIWFgD1cl9arRgGJgdmMQnm2NinNrBJasdykbHg2lL5YmpbZP2wcsSp9gJUg_oh7bpcoJWrWujXiDugveEl4RL45HK2EgS77PsNvx__TJPtWbQlmB_Jz3w4VWdGUiKhIRlPmmRrmHbBWhyzu5_9EFh6-s3tQv_s5t_qjavW-tvlxtsqSV0tmjQ1vBgRmUjjqeCrXy2_tkmyQsx-URorSzWu-lb_k75mPbXO3aZg53t1Al2fSCUiiEr0LSR9SncZN0gYqZqprmRD1Wbdf4IiZXuJbmd8VaDKZ9WZUJBe2GAZ1EKAyvT8o2TaNY503wkqJXWGLeCNl9LAay146LwF8dPXAV0nHKqhWRXcbn5l5Q5HmCzne8qy9eIg_N-CvnmVgA4itaLTWRL694rwDuZMIPw6FQjlRNPFZu5jxko2_lILBeAAHGekfTo3Jme3tZ5XSMdQ5pLuGtWCXR1vHhW2W84cnD0g9FTkJjWzC8Hn-XjWHOM1KHS5ykCmwkbqw9mT8kY_JqjOqJ4Skxc7CCXmtGjdoFDeAv7k0YxqmSxfNuQMEePOB8ywWaIqmQ_8zc-MseVFqAOH9hKRqOwcK85vLCCAWTAcG_0VWVxhJj-VNwsTV7kTtVlCpGml1OQMuxp34o0_Ehz1m00" alt="注文作成シーケンス" />
-  <figcaption>注文作成シーケンス</figcaption>
-</figure>
-
-<p>PlantUML ソース: <a href="../diagrams/order-sequence.puml"><code>docs/diagrams/order-sequence.puml</code></a></p>
-<h2 id="6">6. 画像アセットの管理<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
-<p>画面キャプチャ、手書きの概念図、既存システムの構成図などは <code>docs/assets/images/</code> に保存して参照します。</p>
-<p><img alt="管理対象画像の例" src="../assets/images/sample-system-context.svg" /></p>
-<h2 id="7">7. 非機能要件サンプル<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+  author[設計書を編集] --&gt; source[docs/ / mkdocs.yml]
+  source --&gt; action[GitHub Actions]
+  action --&gt; install[依存関係をインストール]
+  install --&gt; build[npm test]
+  build --&gt; mkdocs[MkDocs strict build]
+  mkdocs --&gt; version[site/version.json 生成]
+  version --&gt; artifact[HTML artifact]
+  artifact --&gt; pages[GitHub Pages]
+  pages --&gt; reviewer[Preview URL でレビュー]</code></pre>
+<h2 id="_3">ローカル生成の流れ<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>ローカルでは <code>npm test</code> を実行すると、JavaScript の構文チェック、MkDocs の strict build、バージョンメタデータ生成をまとめて実行します。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>npm<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<p><code>npm test</code> の中身は <code>package.json</code> に定義されています。</p>
+<ol>
+<li><code>node --check scripts/write-version.mjs</code> でバージョン生成スクリプトの構文を確認する。</li>
+<li><code>python -m mkdocs build --strict</code> で <code>docs/</code> を <code>site/</code> に変換し、リンクや設定の問題を strict build で検出する。</li>
+<li><code>node scripts/write-version.mjs</code> で <code>site/version.json</code> を出力する。</li>
+</ol>
+<p>生成結果をブラウザで確認したい場合は、ビルド後に次のコマンドで <code>site/</code> を配信します。</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">8000</span><span class="w"> </span>-d<span class="w"> </span>site
+</code></pre></div>
+<h2 id="mkdocs">MkDocs が担当すること<a class="headerlink" href="#mkdocs" title="Permanent link">&para;</a></h2>
+<p><code>mkdocs.yml</code> はサイト生成の中心設定です。ここでサイト名、テーマ、Markdown 拡張、追加 CSS / JavaScript、ナビゲーション、PlantUML hook をまとめて管理します。</p>
 <table>
 <thead>
 <tr>
-<th>分類</th>
-<th>要件</th>
-<th>補足</th>
+<th>設定</th>
+<th>役割</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>可用性</td>
-<td>月間稼働率 99.9%</td>
-<td>CDN と Backend API を冗長化する</td>
+<td><code>theme</code></td>
+<td>MkDocs Material の見た目、配色、検索、コードコピーなどを設定する</td>
 </tr>
 <tr>
-<td>性能</td>
-<td>商品検索 P95 500ms 未満</td>
-<td>キャッシュを活用する</td>
+<td><code>plugins</code></td>
+<td>日本語検索など、サイト生成時に使うプラグインを設定する</td>
 </tr>
 <tr>
-<td>セキュリティ</td>
-<td>管理画面は SSO 必須</td>
-<td>監査ログを保存する</td>
+<td><code>markdown_extensions</code></td>
+<td>Admonition、Details、Tabs、Task list、Mermaid などの Markdown 表現を有効化する</td>
 </tr>
 <tr>
-<td>運用</td>
-<td>障害通知は 5 分以内</td>
-<td>監視アラートを ChatOps に連携する</td>
+<td><code>hooks</code></td>
+<td>PlantUML のコードブロックや <code>.puml.svg</code> 参照を SVG 表示に変換する</td>
+</tr>
+<tr>
+<td><code>extra_css</code> / <code>extra_javascript</code></td>
+<td>サイト固有の見た目やバージョン表示を追加する</td>
+</tr>
+<tr>
+<td><code>nav</code></td>
+<td>サイドナビに表示するページ構成を定義する</td>
 </tr>
 </tbody>
 </table>
-<h2 id="8">8. 図のバージョン管理サンプル<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>対象</th>
-<th>現行版</th>
-<th>管理方法</th>
-<th>確認ポイント</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>コンポーネント図</td>
-<td>v0.3</td>
-<td>Markdown 内の PlantUML ブロックを Git 管理</td>
-<td>パッケージ境界、依存方向、凡例の見やすさ</td>
-</tr>
-<tr>
-<td>注文作成シーケンス</td>
-<td>v0.3</td>
-<td><code>docs/diagrams/order-sequence.puml</code> を Git 管理</td>
-<td>同期処理、外部連携、永続化タイミング</td>
-</tr>
-</tbody>
-</table>
-<p>設計書サイトのヘッダーとフッターには <code>package.json</code> のドキュメントバージョン、Git ref、短縮 SHA、ビルド時刻を表示します。PR では <code>site/version.json</code> も artifact に含まれるため、レビューした HTML がどのコミットから生成されたかを確認できます。</p>
-<h2 id="9-adr">9. ADR サンプル<a class="headerlink" href="#9-adr" title="Permanent link">&para;</a></h2>
-<h3 id="adr-001">ADR-001: 図の管理方式<a class="headerlink" href="#adr-001" title="Permanent link">&para;</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">新しいページを追加したとき</p>
+<p>Markdown ファイルを追加するだけでは、ナビゲーションに出ない場合があります。ページを追加したら <code>mkdocs.yml</code> の <code>nav</code> と <code>docs/index.md</code> のドキュメント一覧を更新してください。</p>
+</div>
+<h2 id="github-actions">GitHub Actions で自動生成する流れ<a class="headerlink" href="#github-actions" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions の workflow は <code>.github/workflows/pages.yml</code> にあります。push、Pull Request、手動実行で起動し、環境変数として Node.js、Python、公開先ブランチ、preview 配置先を定義しています。</p>
+<h3 id="1-build-job">1. build job<a class="headerlink" href="#1-build-job" title="Permanent link">&para;</a></h3>
+<p><code>build</code> job は、PR が closed された場合を除いて実行されます。</p>
+<ol>
+<li>リポジトリを checkout する。</li>
+<li>Node.js と Python をセットアップする。</li>
+<li><code>pip install -r requirements.txt</code> で MkDocs Material をインストールする。</li>
+<li><code>BUILD_TIME</code> を UTC で記録する。</li>
+<li><code>npm test</code> で静的サイトを生成する。</li>
+<li>生成された <code>site/</code> を <code>design-docs-site</code> artifact としてアップロードする。</li>
+</ol>
+<h3 id="2-production-deploy">2. production deploy<a class="headerlink" href="#2-production-deploy" title="Permanent link">&para;</a></h3>
+<p>main ブランチへの push や手動実行など、Pull Request ではないイベントでは <code>deploy-production</code> job が実行されます。</p>
 <ul>
-<li>ステータス: 採用</li>
-<li>決定: UML は PlantUML、軽量な構成図は Mermaid、外部作成図は画像として管理する</li>
-<li>理由: テキスト差分でレビューできる範囲を広げつつ、画像しか表現できない資料も共存させるため</li>
+<li><code>design-docs-site</code> artifact をダウンロードする。</li>
+<li><code>gh-pages</code> ブランチのルートへ <code>site/</code> を公開する。</li>
+<li><code>previews/</code> は削除対象から除外し、公開中の PR preview を維持する。</li>
+</ul>
+<h3 id="3-pr-preview-deploy">3. PR preview deploy<a class="headerlink" href="#3-pr-preview-deploy" title="Permanent link">&para;</a></h3>
+<p>同一リポジトリ内の Pull Request では <code>deploy-preview</code> job が実行されます。</p>
+<ul>
+<li><code>design-docs-site</code> artifact をダウンロードする。</li>
+<li><code>gh-pages/previews/pr-&lt;PR番号&gt;/</code> に PR 版の HTML を公開する。</li>
+<li><code>previews/versions.json</code> に PR preview の URL、ドキュメント版、Git ref、SHA、ビルド時刻を登録する。</li>
+<li>PR コメントに Preview URL と Version index を投稿または更新する。</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">fork からの PR</p>
+<p>GitHub Pages へ書き込む権限が必要なため、fork からの PR では preview deploy を実行しません。その場合も <code>design-docs-site</code> artifact をダウンロードして表示確認できます。</p>
+</div>
+<h3 id="4-pr-preview-cleanup">4. PR preview cleanup<a class="headerlink" href="#4-pr-preview-cleanup" title="Permanent link">&para;</a></h3>
+<p>Pull Request が closed された場合は <code>cleanup-preview</code> job が実行されます。</p>
+<ul>
+<li><code>gh-pages/previews/pr-&lt;PR番号&gt;/</code> を空ディレクトリで上書きする。</li>
+<li><code>previews/versions.json</code> から該当 PR の preview 情報を削除する。</li>
+</ul>
+<h2 id="_4">バージョン情報の見え方<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><code>scripts/write-version.mjs</code> は、<code>package.json</code> のドキュメント版、Git ref、コミット SHA、短縮 SHA、ビルド時刻を <code>site/version.json</code> に出力します。追加 JavaScript の <code>docs/javascripts/version-sidebar.js</code> は、この情報を読み取り、ヘッダーのバージョンチップとサイドバーの「公開済みバージョン」に表示します。</p>
+<table>
+<thead>
+<tr>
+<th>表示箇所</th>
+<th>何を確認するか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ヘッダーのバージョンチップ</td>
+<td>表示中サイトのドキュメント版と短縮 SHA</td>
+</tr>
+<tr>
+<td>サイドバーの公開済みバージョン</td>
+<td>Production と公開中 PR preview の一覧</td>
+</tr>
+<tr>
+<td><code>site/version.json</code></td>
+<td>レビューしている HTML の生成元コミット、ref、ビルド時刻</td>
+</tr>
+<tr>
+<td>PR コメント</td>
+<td>Preview URL と Version index</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">変更時の注意点<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Markdown のページ構成を変えたら、<code>mkdocs.yml</code> の <code>nav</code> とリンクを更新します。</li>
+<li><code>markdown_extensions</code> を追加したら、対応するサンプルを <code>docs/guides/mkdocs-material-cheatsheet.md</code> に追加します。</li>
+<li>GitHub Actions の公開先や preview の置き場所を変えたら、<code>docs/pr-visual-review.md</code> とこのページを更新します。</li>
+<li><code>site/</code> は生成物なので、通常はコミットしません。</li>
+<li>PR では、<code>npm test</code> の結果、Preview URL、<code>site/version.json</code> の shortSha を確認します。</li>
 </ul>
 
 
