@@ -10,10 +10,11 @@ const escapeText = (value) =>
 const scriptRoot = new URL('../', document.currentScript?.src || document.baseURI);
 const pageRoot = scriptRoot;
 const metadataUrl = new URL('version.json', pageRoot);
-const previewRootMatch = window.location.pathname.match(/^(.*\/previews\/pr-\d+\/)/);
-const versionsUrl = previewRootMatch
-  ? new URL('../versions.json', `${window.location.origin}${previewRootMatch[1]}`)
-  : new URL('previews/versions.json', pageRoot);
+const previewRootMatch = window.location.pathname.match(/^(.*\/)previews\/pr-\d+\//);
+const productionRoot = previewRootMatch
+  ? new URL(previewRootMatch[1] || '/', window.location.origin)
+  : pageRoot;
+const versionsUrl = new URL('previews/versions.json', productionRoot);
 
 function renderVersionItem(preview) {
   const title = preview.title || `PR #${preview.prNumber}`;
@@ -37,7 +38,7 @@ function mountVersionPanel(metadata) {
   panel.className = 'dd-version-panel';
   panel.innerHTML = `
     <h2>公開済みバージョン</h2>
-    <a class="dd-version-card dd-version-card--production" href="${escapeText(new URL('index.html', pageRoot).href)}">
+    <a class="dd-version-card dd-version-card--production" href="${escapeText(new URL('index.html', productionRoot).href)}">
       <span class="dd-version-kind">Production</span>
       <strong>Docs v${escapeText(metadata.docVersion || 'local')}</strong>
       <small>${escapeText(metadata.shortSha || 'local')} / ${escapeText(metadata.refName || 'local')}</small>
