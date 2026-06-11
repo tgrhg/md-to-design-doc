@@ -110,3 +110,26 @@
   border-radius: 0.6rem;
   font-size: 0.66rem;
 }
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #6366f1;
+  --md-accent-fg-color: #22d3ee;
+}
+
+[data-md-color-scheme="slate"] .md-typeset figure.plantuml-card {
+  background: linear-gradient(180deg, var(--md-default-bg-color), var(--md-code-bg-color));
+  box-shadow: 0 0.7rem 1.8rem rgb(0 0 0 / 24%);
+}
+
+[data-md-color-scheme="slate"] .md-typeset figure.plantuml-card img {
+  background: #fff;
+}
+
+[data-md-color-scheme="slate"] .dd-version-chip {
+  border-color: rgb(255 255 255 / 28%);
+  background: rgb(255 255 255 / 8%);
+}
+
+[data-md-color-scheme="slate"] .dd-version-card {
+  box-shadow: 0 0.15rem 0.5rem rgb(0 0 0 / 20%);
+}
