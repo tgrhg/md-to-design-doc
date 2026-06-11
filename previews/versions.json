@@ -1,6 +1,18 @@
 {
-  "updatedAt": "2026-06-11T06:04:12.264Z",
+  "updatedAt": "2026-06-11T13:15:55.016Z",
   "previews": [
+    {
+      "kind": "pr-preview",
+      "prNumber": 13,
+      "title": "Add Qiita article draft describing Markdown-based design docs and Pages preview workflow",
+      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-13/",
+      "docVersion": "0.3.0",
+      "refName": "13/merge",
+      "sha": "f9f210823d063abf2531ca3d22c10c57d7a97b05",
+      "shortSha": "f9f2108",
+      "buildTime": "2026-06-11T13:15:41Z",
+      "updatedAt": "2026-06-11T13:15:55.016Z"
+    },
     {
       "kind": "pr-preview",
       "prNumber": 12,
