@@ -83,6 +83,57 @@ jobs:
           destination_dir: ${{ env.PREVIEW_ROOT }}/pr-${{ github.event.pull_request.number }}
           keep_files: true
           full_commit_message: 'Deploy PR #${{ github.event.pull_request.number }} preview from ${{ github.event.pull_request.head.sha }}'
+      - name: Register PR preview version
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_ROOT: ${{ env.PREVIEW_ROOT }}
+          PAGES_BRANCH: ${{ env.PAGES_BRANCH }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const repoPath = repo === `${owner}.github.io` ? '' : `/${repo}`;
+            const previewUrl = `https://${owner}.github.io${repoPath}/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/`;
+            const manifestPath = `${process.env.PREVIEW_ROOT}/versions.json`;
+            const metadata = JSON.parse(fs.readFileSync('site/version.json', 'utf8'));
+            let sha;
+            let manifest = { updatedAt: new Date().toISOString(), previews: [] };
+            try {
+              const { data } = await github.rest.repos.getContent({
+                owner,
+                repo,
+                path: manifestPath,
+                ref: process.env.PAGES_BRANCH,
+              });
+              sha = data.sha;
+              manifest = JSON.parse(Buffer.from(data.content, data.encoding).toString('utf8'));
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            const previews = (manifest.previews || []).filter((preview) => preview.prNumber !== context.issue.number);
+            previews.unshift({
+              kind: 'pr-preview',
+              prNumber: context.issue.number,
+              title: context.payload.pull_request.title,
+              url: previewUrl,
+              docVersion: metadata.docVersion,
+              refName: metadata.refName,
+              sha: metadata.sha,
+              shortSha: metadata.shortSha,
+              buildTime: metadata.buildTime,
+              updatedAt: new Date().toISOString(),
+            });
+            const body = JSON.stringify({ updatedAt: new Date().toISOString(), previews }, null, 2) + '\n';
+            await github.rest.repos.createOrUpdateFileContents({
+              owner,
+              repo,
+              path: manifestPath,
+              branch: process.env.PAGES_BRANCH,
+              message: `Register PR #${context.issue.number} preview version`,
+              content: Buffer.from(body).toString('base64'),
+              sha,
+            });
       - name: Comment preview URL
         uses: actions/github-script@v7
         env:
@@ -94,8 +145,21 @@ jobs:
             const repo = context.repo.repo;
             const repoPath = repo === `${owner}.github.io` ? '' : `/${repo}`;
             const previewUrl = `https://${owner}.github.io${repoPath}/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/`;
+            const versionsUrl = `https://${owner}.github.io${repoPath}/`;
             const marker = '<!-- design-docs-preview-url -->';
-            const body = `${marker}\n### Design Docs Preview\n\nPR の HTML はダウンロード不要で確認できます。\n\n🔎 **Preview:** ${previewUrl}\n\n- Production はルート URL のまま維持し、この PR は \`/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/\` に別バージョンとして公開します。\n- GitHub Pages の公開元は **Deploy from a branch / \`${process.env.PAGES_BRANCH || 'gh-pages'}\` / root** に設定してください。`;
+            const body = [
+              marker,
+              '### Design Docs Preview',
+              '',
+              'PR の HTML はダウンロード不要で確認できます。',
+              '',
+              `🔎 **Preview:** ${previewUrl}`,
+              `📚 **Version index:** ${versionsUrl}`,
+              '',
+              `- Production はルート URL のまま維持し、この PR は \`/${process.env.PREVIEW_ROOT}/pr-${context.issue.number}/\` に別バージョンとして公開します。`,
+              `- サイドバーの「公開済みバージョン」から、この PR preview にもたどれるように \`/${process.env.PREVIEW_ROOT}/versions.json\` を更新します。`,
+              `- GitHub Pages の公開元は **Deploy from a branch / \`${process.env.PAGES_BRANCH || 'gh-pages'}\` / root** に設定してください。`,
+            ].join('\n');
             const { data: comments } = await github.rest.issues.listComments({
               owner,
               repo,
@@ -124,3 +188,37 @@ jobs:
           destination_dir: ${{ env.PREVIEW_ROOT }}/pr-${{ github.event.pull_request.number }}
           keep_files: true
           full_commit_message: 'Remove PR #${{ github.event.pull_request.number }} preview'
+      - name: Unregister PR preview version
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_ROOT: ${{ env.PREVIEW_ROOT }}
+          PAGES_BRANCH: ${{ env.PAGES_BRANCH }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const manifestPath = `${process.env.PREVIEW_ROOT}/versions.json`;
+            let data;
+            try {
+              ({ data } = await github.rest.repos.getContent({
+                owner,
+                repo,
+                path: manifestPath,
+                ref: process.env.PAGES_BRANCH,
+              }));
+            } catch (error) {
+              if (error.status === 404) return;
+              throw error;
+            }
+            const manifest = JSON.parse(Buffer.from(data.content, data.encoding).toString('utf8'));
+            const previews = (manifest.previews || []).filter((preview) => preview.prNumber !== context.issue.number);
+            const body = JSON.stringify({ updatedAt: new Date().toISOString(), previews }, null, 2) + '\n';
+            await github.rest.repos.createOrUpdateFileContents({
+              owner,
+              repo,
+              path: manifestPath,
+              branch: process.env.PAGES_BRANCH,
+              message: `Unregister PR #${context.issue.number} preview version`,
+              content: Buffer.from(body).toString('base64'),
+              sha: data.sha,
+            });

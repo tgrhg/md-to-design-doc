@@ -271,8 +271,23 @@ function navItems(currentRel) {
     .join('\n');
 }
 
+function versionSidebar(currentRel) {
+  return `<section class="sidebar-versions" aria-labelledby="sidebar-versions-title">
+  <div class="sidebar-section-title" id="sidebar-versions-title"><span class="nav-icon">history</span><span>公開済みバージョン</span></div>
+  <div id="published-versions" class="sidebar-version-list" data-versions-url="${relativeHref(currentRel, 'previews/versions.json')}">
+    <a class="sidebar-version-item production" href="${relativeHref(currentRel, 'index.html')}">
+      <span class="version-kind"><span class="nav-icon">rocket_launch</span>Production</span>
+      <strong>Docs v${escapeHtml(metadata.docVersion)}</strong>
+      <small>${escapeHtml(metadata.shortSha)} / ${escapeHtml(metadata.refName)}</small>
+    </a>
+    <p class="version-empty">PR preview を確認中...</p>
+  </div>
+</section>`;
+}
+
 function pageTemplate(title, body, currentRel) {
   const cssHref = relativeHref(currentRel, 'assets/site.css');
+  const sidebarVersions = versionSidebar(currentRel);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -292,6 +307,7 @@ function pageTemplate(title, body, currentRel) {
         <span><strong>Design Docs</strong><small>Material style</small></span>
       </a>
       <nav aria-label="ドキュメント一覧">${navItems(currentRel)}</nav>
+      ${sidebarVersions}
     </aside>
     <div class="page-shell">
       <header class="topbar">
@@ -307,6 +323,47 @@ function pageTemplate(title, body, currentRel) {
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
     mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#f0e7ff', primaryBorderColor: '#6750a4', primaryTextColor: '#1d1b20', secondaryColor: '#e8f0fe', tertiaryColor: '#fff8e1', lineColor: '#625b71', fontFamily: 'Noto Sans JP, sans-serif' } });
+
+    const versions = document.querySelector('#published-versions');
+    if (versions) {
+      const escapeText = (value) => String(value ?? '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+      const renderPreview = (preview) => {
+        const title = preview.title || 'PR #' + preview.prNumber;
+        const ref = preview.refName || preview.headRefName || 'preview';
+        const sha = preview.shortSha || (preview.sha ? String(preview.sha).slice(0, 7) : 'unknown');
+        const built = preview.buildTime || preview.updatedAt || '';
+        return '<a class="sidebar-version-item" href="' + escapeText(preview.url) + '">'
+          + '<span class="version-kind"><span class="nav-icon">preview</span>PR Preview</span>'
+          + '<strong>' + escapeText(title) + '</strong>'
+          + '<small>' + escapeText(sha) + ' / ' + escapeText(ref) + '</small>'
+          + (built ? '<small>' + escapeText(built) + '</small>' : '')
+          + '</a>';
+      };
+
+      const manifestUrl = (() => {
+        const previewRoot = window.location.pathname.match(/^(.*\/previews\/pr-\d+\/)/);
+        if (previewRoot) return new URL('../versions.json', window.location.origin + previewRoot[1]).href;
+        return versions.dataset.versionsUrl;
+      })();
+
+      fetch(manifestUrl, { cache: 'no-store' })
+        .then((response) => response.ok ? response.json() : { previews: [] })
+        .then((data) => {
+          const previews = Array.isArray(data) ? data : (data.previews || []);
+          const validPreviews = previews.filter((preview) => preview && preview.url);
+          const empty = versions.querySelector('.version-empty');
+          if (!validPreviews.length) {
+            if (empty) empty.textContent = '公開中の PR preview はまだありません。';
+            return;
+          }
+          if (empty) empty.remove();
+          versions.insertAdjacentHTML('beforeend', validPreviews.map(renderPreview).join(''));
+        })
+        .catch(() => {
+          const empty = versions.querySelector('.version-empty');
+          if (empty) empty.textContent = 'PR preview の履歴はまだ公開されていません。';
+        });
+    }
   </script>
 </body>
 </html>`;
@@ -363,6 +420,7 @@ body {
   top: 0;
   height: 100vh;
   padding: 22px 16px;
+  overflow-y: auto;
   background: rgb(255 255 255 / 88%);
   border-right: 1px solid var(--md-sys-color-outline-variant);
   backdrop-filter: blur(22px);
@@ -667,6 +725,93 @@ figcaption {
   background: #f8fafc;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: 999px;
+}
+
+.sidebar-versions {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.sidebar-section-title {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0 10px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+
+.sidebar-version-list {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar-version-item {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  color: var(--md-sys-color-on-surface);
+  text-decoration: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: var(--md-sys-elevation-1);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.sidebar-version-item:hover {
+  border-color: rgb(79 70 229 / 34%);
+  background: var(--md-sys-color-surface-container-high);
+  transform: translateX(2px);
+}
+
+.sidebar-version-item.production {
+  background: linear-gradient(135deg, #ffffff, var(--md-sys-color-primary-container));
+}
+
+.version-kind {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 8px;
+  color: var(--md-sys-color-primary);
+  font-size: .68rem;
+  font-weight: 800;
+  border: 1px solid rgb(79 70 229 / 18%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 72%);
+}
+
+.sidebar-version-item strong {
+  overflow: hidden;
+  font-size: .86rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.sidebar-version-item small {
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .74rem;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+}
+
+.version-empty {
+  margin: 0;
+  padding: 12px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: .78rem;
+  line-height: 1.55;
+  border: 1px dashed var(--md-sys-color-outline-variant);
+  border-radius: 14px;
+  background: var(--md-sys-color-surface-container);
 }
 
 .version-footer {

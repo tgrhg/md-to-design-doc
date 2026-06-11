@@ -14,7 +14,7 @@ python3 -m http.server 8000 -d site
 
 ## PR Preview URL
 
-PR の HTML をダウンロードせずに確認したい場合は、GitHub Pages の公開元を **Deploy from a branch / `gh-pages` / root** に設定します。workflow は production を `gh-pages` のルートに、PR preview を `gh-pages/previews/pr-<番号>/` に公開し、PR コメントへ Preview URL を投稿します。
+PR の HTML をダウンロードせずに確認したい場合は、GitHub Pages の公開元を **Deploy from a branch / `gh-pages` / root** に設定します。workflow は production を `gh-pages` のルートに、PR preview を `gh-pages/previews/pr-<番号>/` に公開し、PR コメントへ Preview URL を投稿します。公開した preview は `gh-pages/previews/versions.json` に登録され、各ページのサイドバーにある「公開済みバージョン」から production と並べてたどれます。
 
 ## 対応している表現
 
@@ -27,6 +27,7 @@ PR の HTML をダウンロードせずに確認したい場合は、GitHub Page
 - Material Design 風のフレームと PlantUML テーマによる見やすい UML 図
 - `site/version.json` と画面フッターによる生成元バージョンの確認
 - PR ごとの Pages Preview URL と HTML artifact による視覚確認
+- サイドバーの「公開済みバージョン」から PR preview を辿るバージョン一覧
 
 ## ディレクトリ構成
 
