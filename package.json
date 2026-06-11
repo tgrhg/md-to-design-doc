@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-site.mjs",
-    "test": "node --check scripts/build-site.mjs && node scripts/build-site.mjs"
+    "build": "python -m mkdocs build --strict && node scripts/write-version.mjs",
+    "test": "node --check scripts/write-version.mjs && python -m mkdocs build --strict && node scripts/write-version.mjs"
   }
 }
