@@ -18,6 +18,15 @@ theme:
     - scheme: default
       primary: indigo
       accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: ダークモードに切り替え
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: ライトモードに切り替え
   features:
     - navigation.sections
     - navigation.instant
