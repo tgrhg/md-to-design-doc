@@ -1,17 +1,4 @@
 {
-  "updatedAt": "2026-06-11T01:59:50.010Z",
-  "previews": [
-    {
-      "kind": "pr-preview",
-      "prNumber": 9,
-      "title": "Migrate site generation to MkDocs Material, add PlantUML hook and version UI",
-      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-9/",
-      "docVersion": "0.3.0",
-      "refName": "9/merge",
-      "sha": "351a189b2a2cb64e552d74e5e416d8a4ecb5c8f6",
-      "shortSha": "351a189",
-      "buildTime": "2026-06-11T01:59:29Z",
-      "updatedAt": "2026-06-11T01:59:50.010Z"
-    }
-  ]
+  "updatedAt": "2026-06-11T02:07:49.912Z",
+  "previews": []
 }
