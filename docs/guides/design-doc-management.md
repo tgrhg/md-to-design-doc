@@ -4,6 +4,8 @@
 
 このページは、設計書を変更する Pull Request を作るときに「何を、どこに、どの粒度で、どう確認すればよいか」を判断するための運用ガイドです。Markdown、PlantUML、Mermaid、画像を Git で管理し、レビューでは **設計内容の妥当性** と **生成されたサイトの読みやすさ** の両方を確認します。
 
+設計書がどのように HTML 化され、GitHub Actions で自動公開されるかは [ドキュメント生成の仕組み](documentation-generation.md) を参照してください。
+
 ## まず判断すること
 
 | 変更したいこと | 置き場所 | 推奨フォーマット | レビュー観点 |
@@ -32,6 +34,7 @@
     │   └── sample-ec-service.md
     ├── guides/                        # 設計書の書き方・運用ガイド
     │   ├── design-doc-management.md
+    │   ├── documentation-generation.md
     │   └── mkdocs-material-cheatsheet.md
     ├── diagrams/                      # 再利用する PlantUML ソース
     │   └── order-sequence.puml
@@ -55,6 +58,7 @@
 2. **適切なファイルを更新する**
    - 設計本文は `docs/architecture/`、運用ルールは `docs/guides/`、共通図は `docs/diagrams/` を優先します。
    - `mkdocs.yml` の `nav` に追加しないとサイトのナビゲーションに表示されないため、新規ページを作ったら必ず確認します。
+   - 生成・公開の流れを変える場合は、GitHub Actions workflow と [ドキュメント生成の仕組み](documentation-generation.md) を同時に更新します。
 3. **図と本文を同時に更新する**
    - 図だけ、本文だけの変更は内容の不整合が起きやすいため、依存関係・責務・処理順序を本文にも記載します。
    - 大きな図は `title` や `caption` に図版を付け、何が変わったかを PR 説明に書きます。

@@ -76,6 +76,7 @@ nav:
   - サンプル EC サービス設計書: architecture/sample-ec-service.md
   - 設計書運用ガイド:
       - 設計書の変更・管理ガイド: guides/design-doc-management.md
+      - ドキュメント生成の仕組み: guides/documentation-generation.md
       - MkDocs Material 便利機能サンプル: guides/mkdocs-material-cheatsheet.md
   - PR 時の視覚確認方針: pr-visual-review.md
   - 設計書のバージョン管理: versioning.md
