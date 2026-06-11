@@ -1,17 +1,4 @@
 {
-  "updatedAt": "2026-06-11T04:12:41.051Z",
-  "previews": [
-    {
-      "kind": "pr-preview",
-      "prNumber": 11,
-      "title": "Fix production link from PR previews",
-      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-11/",
-      "docVersion": "0.3.0",
-      "refName": "11/merge",
-      "sha": "9a07378f7f80996e1b51e8500117d490e1874482",
-      "shortSha": "9a07378",
-      "buildTime": "2026-06-11T04:12:29Z",
-      "updatedAt": "2026-06-11T04:12:41.051Z"
-    }
-  ]
+  "updatedAt": "2026-06-11T04:17:26.780Z",
+  "previews": []
 }
