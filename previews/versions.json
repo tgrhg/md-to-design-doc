@@ -1,6 +1,18 @@
 {
-  "updatedAt": "2026-06-11T13:15:55.016Z",
+  "updatedAt": "2026-06-12T10:37:24.752Z",
   "previews": [
+    {
+      "kind": "pr-preview",
+      "prNumber": 14,
+      "title": "Render PlantUML diagrams locally",
+      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-14/",
+      "docVersion": "0.3.0",
+      "refName": "14/merge",
+      "sha": "ee3675846955482cbf457f5d6645b22c805608ae",
+      "shortSha": "ee36758",
+      "buildTime": "2026-06-12T10:37:07Z",
+      "updatedAt": "2026-06-12T10:37:24.752Z"
+    },
     {
       "kind": "pr-preview",
       "prNumber": 13,
