@@ -1,0 +1,116 @@
+:root {
+  --md-primary-fg-color: #4f46e5;
+  --md-accent-fg-color: #0891b2;
+}
+
+.dd-version-chip {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.6rem;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  opacity: 0.92;
+}
+
+.dd-version-panel {
+  margin: 1rem 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.dd-version-panel h2 {
+  margin: 0 0 0.5rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dd-version-card {
+  display: grid;
+  gap: 0.18rem;
+  margin-bottom: 0.45rem;
+  padding: 0.55rem;
+  color: var(--md-default-fg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.7rem;
+  background: var(--md-default-bg-color);
+  font-size: 0.68rem;
+  text-decoration: none;
+  box-shadow: 0 0.15rem 0.5rem rgb(15 23 42 / 6%);
+}
+
+.dd-version-card:hover {
+  border-color: var(--md-accent-fg-color);
+}
+
+.dd-version-card.dd-version-card--active {
+  color: #fff;
+  border-color: var(--md-primary-fg-color);
+  background: var(--md-primary-fg-color);
+  box-shadow: 0 0.35rem 0.9rem color-mix(in srgb, var(--md-primary-fg-color) 32%, transparent);
+}
+
+.dd-version-card.dd-version-card--active:hover {
+  border-color: var(--md-primary-fg-color);
+}
+
+.dd-version-card--production {
+  background: color-mix(in srgb, var(--md-primary-fg-color) 8%, var(--md-default-bg-color));
+}
+
+.dd-version-card.dd-version-card--active small,
+.dd-version-card.dd-version-card--active .dd-version-kind {
+  color: rgb(255 255 255 / 86%);
+}
+
+.dd-version-card.dd-version-card--active .dd-version-kind {
+  border-color: rgb(255 255 255 / 36%);
+}
+
+.dd-version-kind {
+  width: fit-content;
+  padding: 0.1rem 0.38rem;
+  color: var(--md-primary-fg-color);
+  border: 1px solid color-mix(in srgb, var(--md-primary-fg-color) 25%, transparent);
+  border-radius: 999px;
+  font-size: 0.56rem;
+  font-weight: 700;
+}
+
+.dd-version-card strong,
+.dd-version-card small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dd-version-card small,
+.dd-version-empty {
+  color: var(--md-default-fg-color--light);
+}
+
+.dd-version-empty {
+  margin: 0;
+  padding: 0.55rem;
+  border: 1px dashed var(--md-default-fg-color--lightest);
+  border-radius: 0.6rem;
+  font-size: 0.66rem;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #6366f1;
+  --md-accent-fg-color: #22d3ee;
+}
+
+
+[data-md-color-scheme="slate"] .dd-version-chip {
+  border-color: rgb(255 255 255 / 28%);
+  background: rgb(255 255 255 / 8%);
+}
+
+[data-md-color-scheme="slate"] .dd-version-card {
+  box-shadow: 0 0.15rem 0.5rem rgb(0 0 0 / 20%);
+}
