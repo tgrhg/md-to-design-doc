@@ -1,6 +1,18 @@
 {
-  "updatedAt": "2026-06-12T18:14:54.954Z",
+  "updatedAt": "2026-06-12T18:33:04.325Z",
   "previews": [
+    {
+      "kind": "pr-preview",
+      "prNumber": 16,
+      "title": "Add white backgrounds to Mermaid diagrams",
+      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-16/",
+      "docVersion": "0.3.0",
+      "refName": "16/merge",
+      "sha": "a0360623c7af62a6472dab3f023121c834264cd4",
+      "shortSha": "a036062",
+      "buildTime": "2026-06-12T18:32:53Z",
+      "updatedAt": "2026-06-12T18:33:04.325Z"
+    },
     {
       "kind": "pr-preview",
       "prNumber": 14,
