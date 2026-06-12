@@ -14,6 +14,9 @@
 ## ドキュメント一覧
 
 - [サンプル EC サービス設計書](architecture/sample-ec-service.md)
+- [設計書の変更・管理ガイド](guides/design-doc-management.md)
+- [ドキュメント生成の仕組み](guides/documentation-generation.md)
+- [MkDocs Material 便利機能サンプル](guides/mkdocs-material-cheatsheet.md)
 - [PR 時の視覚確認方針](pr-visual-review.md)
 - [設計書のバージョン管理](versioning.md)
 
@@ -28,9 +31,10 @@
 
 ## 運用イメージ
 
-1. 設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。
-2. Pull Request を作成する。
-3. GitHub Actions で静的サイトをビルドする。
-4. PR コメントの Preview URL から HTML 表示と `version.json` を確認する。
-5. 権限や Pages 設定で URL が使えない場合は artifact をフォールバックにする。
-6. main ブランチにマージ後、GitHub Pages の production ルートに公開する。
+1. [設計書の変更・管理ガイド](guides/design-doc-management.md)で置き場所、変更粒度、レビュー観点を確認する。
+2. 設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。
+3. Pull Request を作成する。
+4. [ドキュメント生成の仕組み](guides/documentation-generation.md)に沿って GitHub Actions が静的サイトを自動生成する。
+5. PR コメントの Preview URL から HTML 表示と `version.json` を確認する。
+6. 権限や Pages 設定で URL が使えない場合は artifact をフォールバックにする。
+7. main ブランチにマージ後、GitHub Pages の production ルートに公開する。

@@ -1,6 +1,6 @@
 # Markdown Design Docs Sample
 
-Markdown で設計書を管理し、GitHub Pages で **MkDocs Material** ベースのきれいな設計書サイトとして公開するための検証用リポジトリです。
+Markdown で設計書を管理し、GitHub Pages で **MkDocs Material** ベースのきれいな設計書サイトとして公開するための検証用リポジトリです。`docs/` 配下の Markdown と図を MkDocs で `site/` に変換し、GitHub Actions で自動生成・公開します。
 
 ## ローカル確認
 
@@ -19,6 +19,7 @@ python3 -m http.server 8000 -d site
 このリポジトリは、独自の Markdown to HTML 変換ではなく、`mkdocs.yml` で MkDocs Material を設定してサイトを生成します。Material テーマのナビゲーション、検索、コードコピー、目次追従を利用し、リポジトリ固有の要件だけを薄いカスタム実装として追加しています。
 
 - `mkdocs.yml`: MkDocs Material のテーマ、ナビゲーション、Markdown 拡張、Mermaid 設定
+- `docs/guides/`: 設計書 PR の作り方、ディレクトリ構成、ドキュメント生成の仕組み、MkDocs Material 便利機能のサンプル
 - `hooks/plantuml.py`: `plantuml` コードブロックと `*.puml.svg` 参照を PlantUML SVG URL に変換
 - `docs/stylesheets/design-docs.css`: PlantUML カードとバージョン表示の補助スタイル
 - `docs/javascripts/version-sidebar.js`: `version.json` と `previews/versions.json` を読み込み、バージョン情報を表示
@@ -35,7 +36,8 @@ PR の HTML をダウンロードせずに確認したい場合は、GitHub Page
 - `.puml` ファイルとして管理した PlantUML 図の参照
 - Mermaid によるシステム構成図
 - `docs/assets/images/` 配下の画像参照
-- MkDocs Material によるサイドナビ、検索、目次、テーブル、コードブロック
+- 設計書の変更・管理ガイド、ドキュメント生成の仕組み、PR 本文テンプレート
+- MkDocs Material によるサイドナビ、検索、目次、テーブル、コードブロック、Admonition、Details、Tabs、Task list
 - `site/version.json` と画面上のバージョン表示による生成元バージョンの確認
 - PR ごとの Pages Preview URL と HTML artifact による視覚確認
 - サイドバーの「公開済みバージョン」から PR preview を辿るバージョン一覧
@@ -43,17 +45,26 @@ PR の HTML をダウンロードせずに確認したい場合は、GitHub Page
 ## ディレクトリ構成
 
 ```text
-mkdocs.yml
-requirements.txt
+mkdocs.yml                         # サイト設定、ナビゲーション、Markdown 拡張
+requirements.txt                   # MkDocs / Material の Python 依存
+package.json                       # build / test コマンドとドキュメント版
 docs/
-  index.md
-  architecture/sample-ec-service.md
-  diagrams/order-sequence.puml
-  assets/images/sample-system-context.svg
-  javascripts/version-sidebar.js
-  stylesheets/design-docs.css
+  index.md                         # ポータルの入口
+  architecture/                    # 個別システム・機能の設計書
+    sample-ec-service.md
+  guides/                          # 設計書の書き方・運用ガイド
+    design-doc-management.md
+    documentation-generation.md
+    mkdocs-material-cheatsheet.md
+  diagrams/                        # 再利用する PlantUML ソース
+    order-sequence.puml
+  assets/images/                   # 画像アセット
+    sample-system-context.svg
+  javascripts/version-sidebar.js   # バージョン表示用 JS
+  stylesheets/design-docs.css      # サイト固有スタイル
+  pr-visual-review.md
   versioning.md
-hooks/plantuml.py
-scripts/write-version.mjs
-.github/workflows/pages.yml
+hooks/plantuml.py                  # PlantUML 変換 hook
+scripts/write-version.mjs          # site/version.json 出力
+.github/workflows/pages.yml        # MkDocs build / Pages / PR preview workflow
 ```
