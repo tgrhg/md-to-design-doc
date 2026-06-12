@@ -1,5 +1,5 @@
 site_name: Design Docs
-site_description: Markdown と UML で管理する設計書ポータル
+site_description: Markdown と図で管理する設計書ポータル
 site_url: ""
 docs_dir: docs
 site_dir: site
@@ -62,8 +62,6 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
 
-hooks:
-  - hooks/plantuml.py
 
 extra_css:
   - stylesheets/design-docs.css

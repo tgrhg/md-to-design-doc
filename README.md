@@ -20,8 +20,7 @@ python3 -m http.server 8000 -d site
 
 - `mkdocs.yml`: MkDocs Material のテーマ、ナビゲーション、Markdown 拡張、Mermaid 設定
 - `docs/guides/`: 設計書 PR の作り方、ディレクトリ構成、ドキュメント生成の仕組み、MkDocs Material 便利機能のサンプル
-- `hooks/plantuml.py`: `plantuml` コードブロックと `*.puml.svg` 参照を PlantUML SVG URL に変換
-- `docs/stylesheets/design-docs.css`: PlantUML カードとバージョン表示の補助スタイル
+- `docs/stylesheets/design-docs.css`: バージョン表示などのサイト固有スタイル
 - `docs/javascripts/version-sidebar.js`: `version.json` と `previews/versions.json` を読み込み、バージョン情報を表示
 - `scripts/write-version.mjs`: ビルド後に `site/version.json` を出力
 
@@ -32,9 +31,7 @@ PR の HTML をダウンロードせずに確認したい場合は、GitHub Page
 ## 対応している表現
 
 - Markdown による設計書本文
-- `plantuml` コードブロックから PlantUML SVG を表示
-- `.puml` ファイルとして管理した PlantUML 図の参照
-- Mermaid によるシステム構成図
+- Mermaid によるシステム構成図、フロー図、シーケンス図
 - `docs/assets/images/` 配下の画像参照
 - 設計書の変更・管理ガイド、ドキュメント生成の仕組み、PR 本文テンプレート
 - MkDocs Material によるサイドナビ、検索、目次、テーブル、コードブロック、Admonition、Details、Tabs、Task list
@@ -56,15 +53,12 @@ docs/
     design-doc-management.md
     documentation-generation.md
     mkdocs-material-cheatsheet.md
-  diagrams/                        # 再利用する PlantUML ソース
-    order-sequence.puml
   assets/images/                   # 画像アセット
     sample-system-context.svg
   javascripts/version-sidebar.js   # バージョン表示用 JS
   stylesheets/design-docs.css      # サイト固有スタイル
   pr-visual-review.md
   versioning.md
-hooks/plantuml.py                  # PlantUML 変換 hook
 scripts/write-version.mjs          # site/version.json 出力
 .github/workflows/pages.yml        # MkDocs build / Pages / PR preview workflow
 ```

@@ -5,8 +5,8 @@
 ## 検証ポイント
 
 - 設計書本文は Markdown でレビュー・履歴管理する
-- UML 図は PlantUML のコードブロックまたは `.puml` ファイルで管理する
-- システム構成図は Mermaid / PlantUML / 画像ファイルを用途に応じて使い分ける
+- 図は Mermaid のコードブロックまたは画像ファイルで管理する
+- システム構成図は Mermaid / 画像ファイルを用途に応じて使い分ける
 - 画像は `docs/assets/images/` に配置して Markdown から参照する
 - GitHub Pages では Material Design 風の静的 HTML として公開する
 - PR ではビルド済み HTML を artifact として確認し、必要に応じてスクリーンショット差分を追加する
@@ -26,13 +26,13 @@
 | --- | --- |
 | 視認性 | 本文領域をカード化し、見出しと表のコントラストを高める |
 | 操作性 | サイドナビに現在ページのハイライトを表示する |
-| 一貫性 | PlantUML、Mermaid、画像、表を MkDocs Material のトーンに揃えて表示する |
-| 保守性 | Markdown 変換・ナビゲーション・検索は MkDocs Material に任せ、固有機能だけを hook / 追加 JS / 追加 CSS に分離する |
+| 一貫性 | Mermaid、画像、表を MkDocs Material のトーンに揃えて表示する |
+| 保守性 | Markdown 変換・ナビゲーション・検索は MkDocs Material に任せ、固有機能だけを追加 JS / 追加 CSS に分離する |
 
 ## 運用イメージ
 
 1. [設計書の変更・管理ガイド](guides/design-doc-management.md)で置き場所、変更粒度、レビュー観点を確認する。
-2. 設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。
+2. 設計変更を Markdown / Mermaid / 画像としてコミットする。
 3. Pull Request を作成する。
 4. [ドキュメント生成の仕組み](guides/documentation-generation.md)に沿って GitHub Actions が静的サイトを自動生成する。
 5. PR コメントの Preview URL から HTML 表示と `version.json` を確認する。
