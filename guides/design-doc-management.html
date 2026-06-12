@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Markdown と UML で管理する設計書ポータル">
+        <meta name="description" content="Markdown と図で管理する設計書ポータル">
       
       
       
@@ -695,7 +695,7 @@
 
 <h1 id="_1">設計書の変更・管理ガイド<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">目的<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>このページは、設計書を変更する Pull Request を作るときに「何を、どこに、どの粒度で、どう確認すればよいか」を判断するための運用ガイドです。Markdown、PlantUML、Mermaid、画像を Git で管理し、レビューでは <strong>設計内容の妥当性</strong> と <strong>生成されたサイトの読みやすさ</strong> の両方を確認します。</p>
+<p>このページは、設計書を変更する Pull Request を作るときに「何を、どこに、どの粒度で、どう確認すればよいか」を判断するための運用ガイドです。Markdown、Mermaid、画像を Git で管理し、レビューでは <strong>設計内容の妥当性</strong> と <strong>生成されたサイトの読みやすさ</strong> の両方を確認します。</p>
 <p>設計書がどのように HTML 化され、GitHub Actions で自動公開されるかは <a href="documentation-generation.html">ドキュメント生成の仕組み</a> を参照してください。</p>
 <h2 id="_3">まず判断すること<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <table>
@@ -716,14 +716,14 @@
 </tr>
 <tr>
 <td>複数ページから参照する図を追加する</td>
-<td><code>docs/diagrams/</code></td>
-<td>PlantUML <code>.puml</code></td>
+<td><code>docs/assets/images/</code> または参照元 Markdown</td>
+<td>SVG / PNG / JPEG / Mermaid</td>
 <td>依存方向、同期/非同期、外部境界が正しいか</td>
 </tr>
 <tr>
 <td>ページ内だけで使う軽量な図を書く</td>
 <td>対象の Markdown 内</td>
-<td>Mermaid / PlantUML コードブロック</td>
+<td>Mermaid コードブロック</td>
 <td>本文との差分が追いやすいか</td>
 </tr>
 <tr>
@@ -751,31 +751,27 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── mkdocs.yml                         # サイト設定、ナビゲーション、Markdown 拡張
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── requirements.txt                   # MkDocs / Material の Python 依存
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── package.json                       # build / test コマンドとドキュメント版
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── hooks/
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── plantuml.py                    # PlantUML を SVG 表示へ変換する MkDocs hook
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── scripts/
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│   └── write-version.mjs              # site/version.json を出力
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>└── docs/
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    ├── index.md                       # ポータルの入口
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    ├── architecture/                  # 個別システム・機能の設計書
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    │   └── sample-ec-service.md
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    ├── guides/                        # 設計書の書き方・運用ガイド
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    │   ├── design-doc-management.md
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    │   ├── documentation-generation.md
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    │   └── mkdocs-material-cheatsheet.md
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    ├── diagrams/                      # 再利用する PlantUML ソース
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    │   └── order-sequence.puml
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    ├── assets/
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    │   └── images/                    # 画像アセット
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    │       └── sample-system-context.svg
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    ├── javascripts/                   # サイト固有の追加 JS
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    │   └── version-sidebar.js
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    └── stylesheets/                   # サイト固有の追加 CSS
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        └── design-docs.css
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── scripts/
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── write-version.mjs              # site/version.json を出力
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└── docs/
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    ├── index.md                       # ポータルの入口
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    ├── architecture/                  # 個別システム・機能の設計書
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    │   └── sample-ec-service.md
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    ├── guides/                        # 設計書の書き方・運用ガイド
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    │   ├── design-doc-management.md
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    │   ├── documentation-generation.md
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    │   └── mkdocs-material-cheatsheet.md
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    ├── assets/
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    │   └── images/                    # 画像アセット
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    │       └── sample-system-context.svg
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    ├── javascripts/                   # サイト固有の追加 JS
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    │   └── version-sidebar.js
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    └── stylesheets/                   # サイト固有の追加 CSS
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>        └── design-docs.css
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">迷ったときの置き場所</p>
-<p>本文と一緒に読まないと意味が分からない図は Markdown 内に書き、他ページでも使う図や差分レビューしたい図は <code>docs/diagrams/</code> に切り出します。運用手順やテンプレートは <code>docs/guides/</code> に置くと、設計書本文と管理ルールを分けて保守できます。</p>
+<p>本文と一緒に読まないと意味が分からない図は Markdown 内に Mermaid で書き、外部ツールで作成した図やスクリーンショットは <code>docs/assets/images/</code> に置きます。運用手順やテンプレートは <code>docs/guides/</code> に置くと、設計書本文と管理ルールを分けて保守できます。</p>
 </div>
 <h2 id="pr">設計書 PR の基本フロー<a class="headerlink" href="#pr" title="Permanent link">&para;</a></h2>
 <ol>
@@ -783,7 +779,7 @@
 <li>仕様変更、障害対応、運用改善、図の整理など、PR の目的を 1 つに絞ります。</li>
 <li>影響範囲が広い場合は、本文・図・運用ルールを分けた PR にします。</li>
 <li><strong>適切なファイルを更新する</strong></li>
-<li>設計本文は <code>docs/architecture/</code>、運用ルールは <code>docs/guides/</code>、共通図は <code>docs/diagrams/</code> を優先します。</li>
+<li>設計本文は <code>docs/architecture/</code>、運用ルールは <code>docs/guides/</code>、画像アセットは <code>docs/assets/images/</code> を優先します。</li>
 <li><code>mkdocs.yml</code> の <code>nav</code> に追加しないとサイトのナビゲーションに表示されないため、新規ページを作ったら必ず確認します。</li>
 <li>生成・公開の流れを変える場合は、GitHub Actions workflow と <a href="documentation-generation.html">ドキュメント生成の仕組み</a> を同時に更新します。</li>
 <li><strong>図と本文を同時に更新する</strong></li>
@@ -853,7 +849,7 @@
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 新規ページを <code>mkdocs.yml</code> の <code>nav</code> に追加した。</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 見出し階層が <code>#</code> → <code>##</code> → <code>###</code> の順に揃っている。</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 画像には意味が分かる代替テキストを付けた。</li>
-<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> PlantUML / Mermaid の図と本文の説明が一致している。</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Mermaid の図と本文の説明が一致している。</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 機密情報、個人情報、内部 URL、アクセストークンが含まれていない。</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <code>npm test</code> で strict build が成功した。</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Preview URL または artifact で HTML 表示を確認した。</li>
@@ -873,8 +869,8 @@
 <p>画像ファイルを <code>docs/assets/images/</code> に置き、Markdown から相対パスで参照します。スクリーンショットの場合は、機密情報や個人情報をマスクしてからコミットします。差し替え前後で設計意味が変わる場合は、本文にも変更理由を書きます。</p>
 </details>
 <details class="question">
-<summary>PlantUML を別ファイルで管理したい</summary>
-<p><code>docs/diagrams/example.puml</code> を作り、Markdown では <code>![図の説明](../diagrams/example.puml.svg)</code> のように参照します。MkDocs hook が <code>.puml</code> の内容を読み取り、生成 HTML では SVG として表示します。</p>
+<summary>図を別ファイルで管理したい</summary>
+<p>外部ツールで作成した SVG / PNG / JPEG を <code>docs/assets/images/</code> に置き、Markdown から相対パスで参照します。テキスト差分でレビューしたい図は、参照元の Markdown 内に Mermaid コードブロックとして記述します。</p>
 </details>
 <details class="question">
 <summary>レビューで表示崩れを指摘された</summary>

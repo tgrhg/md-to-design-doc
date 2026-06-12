@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Markdown と UML で管理する設計書ポータル">
+        <meta name="description" content="Markdown と図で管理する設計書ポータル">
       
       
       
@@ -619,7 +619,7 @@
 
 <h1 id="_1">設計書のバージョン管理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">目的<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>Markdown、PlantUML、画像アセットを Git で差分管理しつつ、生成された HTML がどの設計書バージョンとコミットから作られたかを追跡できるようにします。</p>
+<p>Markdown、Mermaid、画像アセットを Git で差分管理しつつ、生成された HTML がどの設計書バージョンとコミットから作られたかを追跡できるようにします。</p>
 <h2 id="_3">管理単位<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -641,8 +641,8 @@
 <td>要件、ADR、表の意味が変わっていないか</td>
 </tr>
 <tr>
-<td>UML 図</td>
-<td><code>.puml</code> ファイル、または Markdown 内の <code>plantuml</code> ブロックをレビューする</td>
+<td>図</td>
+<td>Markdown 内の Mermaid ブロックまたは画像アセットをレビューする</td>
 <td>依存方向、ライフライン、境界の変更が意図通りか</td>
 </tr>
 <tr>
@@ -662,8 +662,8 @@
 </ol>
 <h2 id="_5">図の版管理ルール<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
 <ul>
-<li>大きな構成変更を伴う UML 図は <code>title</code> または <code>caption</code> に <code>v0.3</code> のような図版を明記する。</li>
-<li>再利用する図は <code>.puml</code> ファイルに切り出し、Markdown から <code>*.puml.svg</code> として参照する。</li>
+<li>大きな構成変更を伴う図は <code>title</code> または <code>caption</code> に <code>v0.3</code> のような図版を明記する。</li>
+<li>再利用する図は Mermaid を含む Markdown ページ、または <code>docs/assets/images/</code> 配下の画像として管理する。</li>
 <li>図の見た目だけの変更と意味の変更は、PR の説明で分けて記載する。</li>
 <li>表示確認で使った Preview URL、Version index、artifact 名、短縮 SHA を PR コメントに残す。</li>
 </ul>

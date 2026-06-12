@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Markdown と UML で管理する設計書ポータル">
+        <meta name="description" content="Markdown と図で管理する設計書ポータル">
       
       
       
@@ -359,18 +359,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-plantuml" class="md-nav__link">
+  <a href="#4-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
-      4. コンポーネント図（PlantUML）
+      4. コンポーネント図（Mermaid）
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-plantuml" class="md-nav__link">
+  <a href="#5-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
-      5. シーケンス図（PlantUML ファイル管理）
+      5. シーケンス図（Mermaid）
     </span>
   </a>
   
@@ -652,18 +652,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-plantuml" class="md-nav__link">
+  <a href="#4-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
-      4. コンポーネント図（PlantUML）
+      4. コンポーネント図（Mermaid）
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-plantuml" class="md-nav__link">
+  <a href="#5-mermaid" class="md-nav__link">
     <span class="md-ellipsis">
-      5. シーケンス図（PlantUML ファイル管理）
+      5. シーケンス図（Mermaid）
     </span>
   </a>
   
@@ -741,7 +741,7 @@
 
 <h1 id="ec">サンプル EC サービス設計書<a class="headerlink" href="#ec" title="Permanent link">&para;</a></h1>
 <h2 id="1">1. 概要<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>サンプル EC サービスは、商品検索、カート、注文、決済を提供する Web アプリケーションです。本文は Markdown で管理し、図は用途に応じて PlantUML、Mermaid、画像ファイルを利用します。</p>
+<p>サンプル EC サービスは、商品検索、カート、注文、決済を提供する Web アプリケーションです。本文は Markdown で管理し、図は用途に応じて Mermaid または画像ファイルを利用します。</p>
 <h2 id="2">2. スコープ<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <ul>
 <li>利用者向けの商品閲覧と注文</li>
@@ -760,21 +760,54 @@
   api --&gt; payment[外部決済]
   api --&gt; queue[Message Queue]
   queue --&gt; mail[通知 Worker]</code></pre>
-<h2 id="4-plantuml">4. コンポーネント図（PlantUML）<a class="headerlink" href="#4-plantuml" title="Permanent link">&para;</a></h2>
-<p>PlantUML は UML として厳密に管理したい図に向いています。以下は Markdown 内に直接 PlantUML を書く例です。</p>
-<figure class="plantuml-card">
-  <img src="https://www.plantuml.com/plantuml/svg/VPHFJnD16CRlyoacvOnXMv3YmT1kPnDELZ7nFDqTwuPsPvsTjXBZeLq3JT049Q0cS92WO8W70aPHr0ypTF5ZE3FRfjCMtTFiFB_ttxDlTZ7YcF56lGQY5Jy8CSDrMC7kIfNHHk3Pj4OPv0m7aPH8m0qgUeGzslA3Ado8Qn4n51tgKXOG1grPGt1fFQI1JBFCLsi4Ck9o75HhPco1CTfAoqxDEhCtqTouwD20zm4BPHToHGEm1mMAb7c4_IlF41kRTChHptMeKNR6iUQp1GCgOOuhE28ZLMVo2rOnUnqrNXJP3XefUhT16gF9YiZApvKca8dsRJJlv4p7N4xP_yr8aOcUa9CTwKbZXWavAulobW6KPGfS7MtRBfRcq7NGHEDvf-3O072VoyKGdIyYFXNn6n4V8rk_NOXuItJEfNIgfJrzzLAVkydXHjBTXCsP6pdWuf3xD82z_VXg-uLe7rt-skjzVflidFSsNudEw-JhUz5-Bk8D4N_GEReY_YJhYCwnFbo8zc6oVNQrkGO0LZD3kn5nMfUxZ2FeziyWJ0U16VGa9CmdWKioy2c0mns7cGUa0XqcBIE1br7HBL81puQXDcK45ifB4u7A7XcJQZ8EX_ueS4Tv39S9Q_gghaIqwsRo9Lcsoh3oOY9_6Q_MrQ7WIRC8qmd2z4w2NdzF1sLAHGru5QazLcit451J1aHQrFUoF1WO1AUdRwjvuItOsrxhRRMJWzshitqH_qXEZvATTQ0qnSZP97CFBTzNumBrggxrF598wSkVk_83W_HIoVrk5N3oFVdM_VEndPnq3C2h38D_gmKmj7I8WImw1o9-bouIM9Isov_XNm00" alt="PlantUML diagram" />
-  <figcaption>PlantUML diagram</figcaption>
-</figure>
+<h2 id="4-mermaid">4. コンポーネント図（Mermaid）<a class="headerlink" href="#4-mermaid" title="Permanent link">&para;</a></h2>
+<p>コンポーネント間の依存方向も Mermaid で記述します。ビルド時に外部の図生成サービスへアクセスしない構成にしています。</p>
+<pre class="mermaid"><code>flowchart LR
+  customer[Customer]
 
-<h2 id="5-plantuml">5. シーケンス図（PlantUML ファイル管理）<a class="headerlink" href="#5-plantuml" title="Permanent link">&para;</a></h2>
-<p>複数ドキュメントから再利用する図は <code>.puml</code> ファイルとして管理します。</p>
-<figure class="plantuml-card">
-  <img src="https://www.plantuml.com/plantuml/svg/XLNFJnD15BxlNp4f5pqe_GM21qDRTWq9XYQOU9xk3cL2krDdfxHuWcv0J3GXHj63750IYGOIvM10ZN_CqaB_2zzCTzlPKg2dcRxl-zwyxxsPdV44vg9UhHZBr25eYJ5HOat3Mw5k3NDSHILihvGvgxjEWLKOHu9ZruCGSOM6yfQnmnhKBQCbNF685b5Kct6NS9JAwXJol4vScpmXdeVB95UXPHVP84kuXghYPWXOf2y8okWAESvPetUgiQoLdJGdXeCMSqK8I9dfwKn-5409fp9QQ9ukaNdgaZpZ3k6XG24_Es6cHg6671gpfgoSLT1JsOBncDZLuoh8i99fMcdB6ePfLMLIQNDAFrGHkabjMiEkk3cX3hnIWFgD1cl9arRgGJgdmMQnm2NinNrBJasdykbHg2lL5YmpbZP2wcsSp9gJUg_oh7bpcoJWrWujXiDugveEl4RL45HK2EgS77PsNvx__TJPtWbQlmB_Jz3w4VWdGUiKhIRlPmmRrmHbBWhyzu5_9EFh6-s3tQv_s5t_qjavW-tvlxtsqSV0tmjQ1vBgRmUjjqeCrXy2_tkmyQsx-URorSzWu-lb_k75mPbXO3aZg53t1Al2fSCUiiEr0LSR9SncZN0gYqZqprmRD1Wbdf4IiZXuJbmd8VaDKZ9WZUJBe2GAZ1EKAyvT8o2TaNY503wkqJXWGLeCNl9LAay146LwF8dPXAV0nHKqhWRXcbn5l5Q5HmCzne8qy9eIg_N-CvnmVgA4itaLTWRL694rwDuZMIPw6FQjlRNPFZu5jxko2_lILBeAAHGekfTo3Jme3tZ5XSMdQ5pLuGtWCXR1vHhW2W84cnD0g9FTkJjWzC8Hn-XjWHOM1KHS5ykCmwkbqw9mT8kY_JqjOqJ4Skxc7CCXmtGjdoFDeAv7k0YxqmSxfNuQMEePOB8ywWaIqmQ_8zc-MseVFqAOH9hKRqOwcK85vLCCAWTAcG_0VWVxhJj-VNwsTV7kTtVlCpGml1OQMuxp34o0_Ehz1m00" alt="注文作成シーケンス" />
-  <figcaption>注文作成シーケンス</figcaption>
-</figure>
+  subgraph experience[Experience]
+    web[Web Frontend]
+  end
 
-<p>PlantUML ソース: <a href="../diagrams/order-sequence.puml"><code>docs/diagrams/order-sequence.puml</code></a></p>
+  subgraph core[Core API]
+    api[Backend API]
+    order[Order Service]
+  end
+
+  subgraph integration[Integration]
+    payment[Payment Adapter]
+    db[(Order DB)]
+    queue[[Order Events]]
+  end
+
+  customer --&gt;|商品検索・注文| web
+  web --&gt;|REST API| api
+  api --&gt;|注文作成| order
+  order --&gt;|決済要求| payment
+  order --&gt;|注文保存| db
+  order --&gt;|注文イベント| queue</code></pre>
+<h2 id="5-mermaid">5. シーケンス図（Mermaid）<a class="headerlink" href="#5-mermaid" title="Permanent link">&para;</a></h2>
+<p>処理順序を本文と一緒にレビューしたい場合も Mermaid の <code>sequenceDiagram</code> を使います。</p>
+<pre class="mermaid"><code>sequenceDiagram
+  autonumber
+  actor Customer as 利用者
+  participant Web as Web Frontend
+  participant API as Backend API
+  participant Order as Order Service
+  participant Pay as Payment Adapter
+  participant DB as Order DB
+  participant Queue as Order Events
+
+  Customer-&gt;&gt;Web: 注文確定
+  Web-&gt;&gt;API: POST /orders
+  API-&gt;&gt;Order: 注文作成依頼
+  Order-&gt;&gt;Pay: 決済要求
+  Pay--&gt;&gt;Order: 決済結果
+  Order-&gt;&gt;DB: 注文保存
+  Order-&gt;&gt;Queue: 注文イベント発行
+  Order--&gt;&gt;API: 注文ID
+  API--&gt;&gt;Web: 201 Created
+  Web--&gt;&gt;Customer: 注文完了表示</code></pre>
 <h2 id="6">6. 画像アセットの管理<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
 <p>画面キャプチャ、手書きの概念図、既存システムの構成図などは <code>docs/assets/images/</code> に保存して参照します。</p>
 <p><img alt="管理対象画像の例" src="../assets/images/sample-system-context.svg" /></p>
@@ -824,13 +857,13 @@
 <tr>
 <td>コンポーネント図</td>
 <td>v0.3</td>
-<td>Markdown 内の PlantUML ブロックを Git 管理</td>
+<td>Markdown 内の Mermaid ブロックを Git 管理</td>
 <td>パッケージ境界、依存方向、凡例の見やすさ</td>
 </tr>
 <tr>
 <td>注文作成シーケンス</td>
 <td>v0.3</td>
-<td><code>docs/diagrams/order-sequence.puml</code> を Git 管理</td>
+<td>Markdown 内の Mermaid シーケンス図を Git 管理</td>
 <td>同期処理、外部連携、永続化タイミング</td>
 </tr>
 </tbody>
@@ -840,8 +873,8 @@
 <h3 id="adr-001">ADR-001: 図の管理方式<a class="headerlink" href="#adr-001" title="Permanent link">&para;</a></h3>
 <ul>
 <li>ステータス: 採用</li>
-<li>決定: UML は PlantUML、軽量な構成図は Mermaid、外部作成図は画像として管理する</li>
-<li>理由: テキスト差分でレビューできる範囲を広げつつ、画像しか表現できない資料も共存させるため</li>
+<li>決定: テキストでレビューしたい図は Mermaid、外部作成図やスクリーンショットは画像として管理する</li>
+<li>理由: ビルド時の外部図生成サービス依存をなくし、MkDocs Material 標準寄りの構成で運用するため</li>
 </ul>
 
 

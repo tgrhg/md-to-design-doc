@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Markdown と UML で管理する設計書ポータル">
+        <meta name="description" content="Markdown と図で管理する設計書ポータル">
       
       
       
@@ -499,9 +499,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#plantuml-uml" class="md-nav__link">
+  <a href="#mermaid_1" class="md-nav__link">
     <span class="md-ellipsis">
-      PlantUML: UML をテキスト差分で管理する
+      Mermaid: シーケンス図をテキスト差分で管理する
     </span>
   </a>
   
@@ -684,9 +684,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#plantuml-uml" class="md-nav__link">
+  <a href="#mermaid_1" class="md-nav__link">
     <span class="md-ellipsis">
-      PlantUML: UML をテキスト差分で管理する
+      Mermaid: シーケンス図をテキスト差分で管理する
     </span>
   </a>
   
@@ -828,15 +828,18 @@
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">  api --&gt; db[(Database)]</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="sb">```</span>
 </code></pre></div>
-<h2 id="plantuml-uml">PlantUML: UML をテキスト差分で管理する<a class="headerlink" href="#plantuml-uml" title="Permanent link">&para;</a></h2>
-<figure class="plantuml-card">
-  <img src="https://www.plantuml.com/plantuml/svg/SoWkIImgAStDuIhEpimhI2nAp5L8IapEJY_AByrBSSxFoIzIA2bAp2i6IgNcbN2LP9Raf2eyRbxxk6d3uwObZvitFsrVzdn2s-EcxO-RzpnksWWKUToqaoinkGIeCxGujOWBgBCaCpcp836lH44fF3L9II6nM058eqeubfPaA3W6U89bGHmka6O5NJkGKYiK6vyrjpvTiF5nqwIdhKkVTitc0Ye0gGDfib9uiQhtnOezBvOrFjlOn0KsL1Tc1aJg-TO9p-RDWMW2oe1iiLA02BvOkEBvabrS3gbvAS0G0G00" alt="PlantUML diagram" />
-  <figcaption>PlantUML diagram</figcaption>
-</figure>
-
+<h2 id="mermaid_1">Mermaid: シーケンス図をテキスト差分で管理する<a class="headerlink" href="#mermaid_1" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+  actor User as 利用者
+  participant Web as Web
+  participant Auth as Auth API
+  User-&gt;&gt;Web: ログイン情報を入力
+  Web-&gt;&gt;Auth: 認証要求
+  Auth--&gt;&gt;Web: 認証結果
+  Web--&gt;&gt;User: 結果表示</code></pre>
 <div class="admonition tip">
-<p class="admonition-title">PlantUML ソースの書き方</p>
-<p>Markdown では <code>plantuml</code> のコードフェンスに <code>@startuml</code> から <code>@enduml</code> までを書きます。このリポジトリの MkDocs hook がビルド時に SVG 表示へ変換します。再利用する図は <code>docs/diagrams/*.puml</code> に切り出してください。</p>
+<p class="admonition-title">Mermaid ソースの書き方</p>
+<p>Markdown では <code>mermaid</code> のコードフェンスに <code>flowchart</code> や <code>sequenceDiagram</code> を書きます。MkDocs Material の superfences 設定でそのまま表示するため、専用 hook や外部レンダリングサービスは不要です。</p>
 </div>
 <h2 id="_2">属性指定: 画像や表にクラスを付ける<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p><code>attr_list</code> を使うと、画像・リンク・表などに属性を付けられます。サイズ調整や CSS 連携が必要になったときに便利です。</p>
@@ -898,13 +901,13 @@
 </tr>
 <tr>
 <td>Mermaid</td>
-<td>軽量なフロー、構成図</td>
-<td>複雑な UML には PlantUML を使う</td>
+<td>フロー、構成図、シーケンス図</td>
+<td>大きくなりすぎた図は分割する</td>
 </tr>
 <tr>
-<td>PlantUML</td>
-<td>シーケンス図、コンポーネント図</td>
-<td>大きな図は <code>.puml</code> に切り出す</td>
+<td>画像</td>
+<td>外部ツールで作成した図、スクリーンショット</td>
+<td>元ファイルの所在や更新手順も本文に残す</td>
 </tr>
 </tbody>
 </table>

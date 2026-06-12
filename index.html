@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Markdown と UML で管理する設計書ポータル">
+        <meta name="description" content="Markdown と図で管理する設計書ポータル">
       
       
       
@@ -622,8 +622,8 @@
 <h2 id="_1">検証ポイント<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <ul>
 <li>設計書本文は Markdown でレビュー・履歴管理する</li>
-<li>UML 図は PlantUML のコードブロックまたは <code>.puml</code> ファイルで管理する</li>
-<li>システム構成図は Mermaid / PlantUML / 画像ファイルを用途に応じて使い分ける</li>
+<li>図は Mermaid のコードブロックまたは画像ファイルで管理する</li>
+<li>システム構成図は Mermaid / 画像ファイルを用途に応じて使い分ける</li>
 <li>画像は <code>docs/assets/images/</code> に配置して Markdown から参照する</li>
 <li>GitHub Pages では Material Design 風の静的 HTML として公開する</li>
 <li>PR ではビルド済み HTML を artifact として確認し、必要に応じてスクリーンショット差分を追加する</li>
@@ -656,18 +656,18 @@
 </tr>
 <tr>
 <td>一貫性</td>
-<td>PlantUML、Mermaid、画像、表を MkDocs Material のトーンに揃えて表示する</td>
+<td>Mermaid、画像、表を MkDocs Material のトーンに揃えて表示する</td>
 </tr>
 <tr>
 <td>保守性</td>
-<td>Markdown 変換・ナビゲーション・検索は MkDocs Material に任せ、固有機能だけを hook / 追加 JS / 追加 CSS に分離する</td>
+<td>Markdown 変換・ナビゲーション・検索は MkDocs Material に任せ、固有機能だけを追加 JS / 追加 CSS に分離する</td>
 </tr>
 </tbody>
 </table>
 <h2 id="_4">運用イメージ<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ol>
 <li><a href="guides/design-doc-management.html">設計書の変更・管理ガイド</a>で置き場所、変更粒度、レビュー観点を確認する。</li>
-<li>設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。</li>
+<li>設計変更を Markdown / Mermaid / 画像としてコミットする。</li>
 <li>Pull Request を作成する。</li>
 <li><a href="guides/documentation-generation.html">ドキュメント生成の仕組み</a>に沿って GitHub Actions が静的サイトを自動生成する。</li>
 <li>PR コメントの Preview URL から HTML 表示と <code>version.json</code> を確認する。</li>
