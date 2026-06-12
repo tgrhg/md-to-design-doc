@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-12T10:37:24.752Z",
+  "updatedAt": "2026-06-12T10:37:33.408Z",
   "previews": [
     {
       "kind": "pr-preview",
@@ -24,18 +24,6 @@
       "shortSha": "f9f2108",
       "buildTime": "2026-06-11T13:15:41Z",
       "updatedAt": "2026-06-11T13:15:55.016Z"
-    },
-    {
-      "kind": "pr-preview",
-      "prNumber": 12,
-      "title": "設計書の変更・管理ガイドとMkDocs便利機能サンプルを追加",
-      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-12/",
-      "docVersion": "0.3.0",
-      "refName": "12/merge",
-      "sha": "8ecb1c6ccbeec985cd1a681e54b9a88fdceac100",
-      "shortSha": "8ecb1c6",
-      "buildTime": "2026-06-11T06:03:59Z",
-      "updatedAt": "2026-06-11T06:04:12.264Z"
     }
   ]
 }
