@@ -2,7 +2,7 @@
 
 ## 全体像
 
-このリポジトリでは、設計書の原稿を `docs/` 配下の Markdown、PlantUML、Mermaid、画像として管理し、**MkDocs Material** で静的 HTML サイトへ変換します。生成された `site/` ディレクトリは GitHub Actions によって artifact として保存され、main ブランチでは GitHub Pages の production サイトへ、Pull Request では PR preview として自動公開されます。
+このリポジトリでは、設計書の原稿を `docs/` 配下の Markdown、Mermaid、画像として管理し、**MkDocs Material** で静的 HTML サイトへ変換します。生成された `site/` ディレクトリは GitHub Actions によって artifact として保存され、main ブランチでは GitHub Pages の production サイトへ、Pull Request では PR preview として自動公開されます。
 
 ```mermaid
 flowchart LR
@@ -39,14 +39,13 @@ python3 -m http.server 8000 -d site
 
 ## MkDocs が担当すること
 
-`mkdocs.yml` はサイト生成の中心設定です。ここでサイト名、テーマ、Markdown 拡張、追加 CSS / JavaScript、ナビゲーション、PlantUML hook をまとめて管理します。
+`mkdocs.yml` はサイト生成の中心設定です。ここでサイト名、テーマ、Markdown 拡張、追加 CSS / JavaScript、ナビゲーションをまとめて管理します。
 
 | 設定 | 役割 |
 | --- | --- |
 | `theme` | MkDocs Material の見た目、配色、検索、コードコピーなどを設定する |
 | `plugins` | 日本語検索など、サイト生成時に使うプラグインを設定する |
 | `markdown_extensions` | Admonition、Details、Tabs、Task list、Mermaid などの Markdown 表現を有効化する |
-| `hooks` | PlantUML のコードブロックや `.puml.svg` 参照を SVG 表示に変換する |
 | `extra_css` / `extra_javascript` | サイト固有の見た目やバージョン表示を追加する |
 | `nav` | サイドナビに表示するページ構成を定義する |
 

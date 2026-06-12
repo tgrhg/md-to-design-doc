@@ -85,24 +85,21 @@ flowchart LR
 ```
 ````
 
-## PlantUML: UML をテキスト差分で管理する
+## Mermaid: シーケンス図をテキスト差分で管理する
 
-```plantuml
-@startuml
-skinparam backgroundColor transparent
-title ログイン処理シーケンス
-actor User
-participant "Web" as Web
-participant "Auth API" as Auth
-User -> Web: ログイン情報を入力
-Web -> Auth: 認証要求
-Auth --> Web: 認証結果
-Web --> User: 結果表示
-@enduml
+```mermaid
+sequenceDiagram
+  actor User as 利用者
+  participant Web as Web
+  participant Auth as Auth API
+  User->>Web: ログイン情報を入力
+  Web->>Auth: 認証要求
+  Auth-->>Web: 認証結果
+  Web-->>User: 結果表示
 ```
 
-!!! tip "PlantUML ソースの書き方"
-    Markdown では `plantuml` のコードフェンスに `@startuml` から `@enduml` までを書きます。このリポジトリの MkDocs hook がビルド時に SVG 表示へ変換します。再利用する図は `docs/diagrams/*.puml` に切り出してください。
+!!! tip "Mermaid ソースの書き方"
+    Markdown では `mermaid` のコードフェンスに `flowchart` や `sequenceDiagram` を書きます。MkDocs Material の superfences 設定でそのまま表示するため、専用 hook や外部レンダリングサービスは不要です。
 
 ## 属性指定: 画像や表にクラスを付ける
 
@@ -151,5 +148,5 @@ theme:
 | Details | 長い補足、代替案、ログ | 最初から読んでほしい内容は折りたたまない |
 | Tabs | 環境差分、選択肢、Before/After | タブ内だけに重要情報を閉じ込めない |
 | Task list | PR チェックリスト、移行作業 | 完了状態は PR ごとに更新する |
-| Mermaid | 軽量なフロー、構成図 | 複雑な UML には PlantUML を使う |
-| PlantUML | シーケンス図、コンポーネント図 | 大きな図は `.puml` に切り出す |
+| Mermaid | フロー、構成図、シーケンス図 | 大きくなりすぎた図は分割する |
+| 画像 | 外部ツールで作成した図、スクリーンショット | 元ファイルの所在や更新手順も本文に残す |

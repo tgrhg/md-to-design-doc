@@ -2,7 +2,7 @@
 
 ## 1. 概要
 
-サンプル EC サービスは、商品検索、カート、注文、決済を提供する Web アプリケーションです。本文は Markdown で管理し、図は用途に応じて PlantUML、Mermaid、画像ファイルを利用します。
+サンプル EC サービスは、商品検索、カート、注文、決済を提供する Web アプリケーションです。本文は Markdown で管理し、図は用途に応じて Mermaid または画像ファイルを利用します。
 
 ## 2. スコープ
 
@@ -27,64 +27,63 @@ flowchart LR
   queue --> mail[通知 Worker]
 ```
 
-## 4. コンポーネント図（PlantUML）
+## 4. コンポーネント図（Mermaid）
 
-PlantUML は UML として厳密に管理したい図に向いています。以下は Markdown 内に直接 PlantUML を書く例です。
+コンポーネント間の依存方向も Mermaid で記述します。ビルド時に外部の図生成サービスへアクセスしない構成にしています。
 
-```plantuml
-@startuml
-skinparam backgroundColor transparent
-skinparam shadowing false
-skinparam roundcorner 14
-skinparam componentStyle rectangle
-skinparam ArrowColor #4F46E5
-skinparam ArrowFontColor #1E293B
-skinparam ComponentBorderColor #4F46E5
-skinparam ComponentBackgroundColor #FFFFFF
-skinparam ComponentFontColor #0F172A
-skinparam DatabaseBorderColor #0891B2
-skinparam DatabaseBackgroundColor #ECFEFF
-skinparam QueueBorderColor #BE185D
-skinparam QueueBackgroundColor #FCE7F3
-skinparam ActorBorderColor #4F46E5
-skinparam ActorBackgroundColor #EEF2FF
-skinparam ActorFontColor #312E81
-skinparam PackageBorderColor #CBD5E1
-skinparam PackageBackgroundColor #F8FAFC
+```mermaid
+flowchart LR
+  customer[Customer]
 
-title サンプルECサービス コンポーネント構成 v0.3
-caption 境界と依存方向を淡いニュートラルカラーで整理
+  subgraph experience[Experience]
+    web[Web Frontend]
+  end
 
-actor Customer as customer
-package "Experience" {
-  component "Web Frontend" as web
-}
-package "Core API" {
-  component "Backend API" as api
-  component "Order Service" as order
-}
-package "Integration" {
-  component "Payment Adapter" as payment
-  database "Order DB" as db
-  queue "Order Events" as queue
-}
+  subgraph core[Core API]
+    api[Backend API]
+    order[Order Service]
+  end
 
-customer --> web : 商品検索・注文
-web --> api : REST API
-api --> order : 注文作成
-order --> payment : 決済要求
-order --> db : 注文保存
-order --> queue : 注文イベント
-@enduml
+  subgraph integration[Integration]
+    payment[Payment Adapter]
+    db[(Order DB)]
+    queue[[Order Events]]
+  end
+
+  customer -->|商品検索・注文| web
+  web -->|REST API| api
+  api -->|注文作成| order
+  order -->|決済要求| payment
+  order -->|注文保存| db
+  order -->|注文イベント| queue
 ```
 
-## 5. シーケンス図（PlantUML ファイル管理）
+## 5. シーケンス図（Mermaid）
 
-複数ドキュメントから再利用する図は `.puml` ファイルとして管理します。
+処理順序を本文と一緒にレビューしたい場合も Mermaid の `sequenceDiagram` を使います。
 
-![注文作成シーケンス](../diagrams/order-sequence.puml.svg)
+```mermaid
+sequenceDiagram
+  autonumber
+  actor Customer as 利用者
+  participant Web as Web Frontend
+  participant API as Backend API
+  participant Order as Order Service
+  participant Pay as Payment Adapter
+  participant DB as Order DB
+  participant Queue as Order Events
 
-PlantUML ソース: [`docs/diagrams/order-sequence.puml`](../diagrams/order-sequence.puml)
+  Customer->>Web: 注文確定
+  Web->>API: POST /orders
+  API->>Order: 注文作成依頼
+  Order->>Pay: 決済要求
+  Pay-->>Order: 決済結果
+  Order->>DB: 注文保存
+  Order->>Queue: 注文イベント発行
+  Order-->>API: 注文ID
+  API-->>Web: 201 Created
+  Web-->>Customer: 注文完了表示
+```
 
 ## 6. 画像アセットの管理
 
@@ -105,8 +104,8 @@ PlantUML ソース: [`docs/diagrams/order-sequence.puml`](../diagrams/order-sequ
 
 | 対象 | 現行版 | 管理方法 | 確認ポイント |
 | --- | --- | --- | --- |
-| コンポーネント図 | v0.3 | Markdown 内の PlantUML ブロックを Git 管理 | パッケージ境界、依存方向、凡例の見やすさ |
-| 注文作成シーケンス | v0.3 | `docs/diagrams/order-sequence.puml` を Git 管理 | 同期処理、外部連携、永続化タイミング |
+| コンポーネント図 | v0.3 | Markdown 内の Mermaid ブロックを Git 管理 | パッケージ境界、依存方向、凡例の見やすさ |
+| 注文作成シーケンス | v0.3 | Markdown 内の Mermaid シーケンス図を Git 管理 | 同期処理、外部連携、永続化タイミング |
 
 設計書サイトのヘッダーとフッターには `package.json` のドキュメントバージョン、Git ref、短縮 SHA、ビルド時刻を表示します。PR では `site/version.json` も artifact に含まれるため、レビューした HTML がどのコミットから生成されたかを確認できます。
 
@@ -115,5 +114,5 @@ PlantUML ソース: [`docs/diagrams/order-sequence.puml`](../diagrams/order-sequ
 ### ADR-001: 図の管理方式
 
 - ステータス: 採用
-- 決定: UML は PlantUML、軽量な構成図は Mermaid、外部作成図は画像として管理する
-- 理由: テキスト差分でレビューできる範囲を広げつつ、画像しか表現できない資料も共存させるため
+- 決定: テキストでレビューしたい図は Mermaid、外部作成図やスクリーンショットは画像として管理する
+- 理由: ビルド時の外部図生成サービス依存をなくし、MkDocs Material 標準寄りの構成で運用するため
