@@ -13,7 +13,7 @@
   box-shadow: 0 0.7rem 1.8rem rgb(15 23 42 / 8%);
 }
 
-.md-typeset figure.plantuml-card img {
+.md-typeset figure.plantuml-card svg {
   display: block;
   max-width: 100%;
   height: auto;
@@ -141,7 +141,7 @@
   box-shadow: 0 0.7rem 1.8rem rgb(0 0 0 / 24%);
 }
 
-[data-md-color-scheme="slate"] .md-typeset figure.plantuml-card img {
+[data-md-color-scheme="slate"] .md-typeset figure.plantuml-card svg {
   background: #fff;
 }
 
