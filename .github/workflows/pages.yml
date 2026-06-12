@@ -38,6 +38,8 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
+      - name: Install local PlantUML renderer
+        run: sudo apt-get update && sudo apt-get install -y plantuml graphviz
       - name: Install documentation dependencies
         run: pip install -r requirements.txt
       - name: Capture build time

@@ -1,60 +1,127 @@
 """PlantUML support for MkDocs Material pages.
 
 This hook keeps PlantUML sources reviewable as Markdown / .puml text while
-rendering them through the public PlantUML SVG endpoint at build output time.
+rendering them with a local PlantUML command at build output time. It never
+sends diagram source to a public PlantUML endpoint.
 """
 
 from __future__ import annotations
 
 import html
+import os
 import re
-import zlib
+import shlex
+import shutil
+import subprocess
 from pathlib import Path
 from typing import Any
 
-PLANTUML_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
-PLANTUML_SERVER = "https://www.plantuml.com/plantuml/svg"
 FENCED_PLANTUML_RE = re.compile(r"```plantuml\n(.*?)\n```", re.DOTALL)
 PUML_IMAGE_RE = re.compile(r"!\[([^\]]*)\]\(([^)]+\.puml)\.svg\)")
+DEFAULT_TIMEOUT_SECONDS = 30
 
 
-def _encode_6bit(value: int) -> str:
-    return PLANTUML_ALPHABET[value & 0x3F]
+def _plantuml_command() -> list[str] | None:
+    """Return the local PlantUML command to use, if one is configured."""
+
+    if command := os.environ.get("PLANTUML_COMMAND"):
+        return shlex.split(command)
+
+    if jar_path := os.environ.get("PLANTUML_JAR"):
+        return ["java", "-jar", jar_path]
+
+    if executable := shutil.which("plantuml"):
+        return [executable]
+
+    return None
 
 
-def _append_3_bytes(b1: int, b2: int, b3: int) -> str:
-    c1 = b1 >> 2
-    c2 = ((b1 & 0x3) << 4) | (b2 >> 4)
-    c3 = ((b2 & 0xF) << 2) | (b3 >> 6)
-    c4 = b3 & 0x3F
-    return "".join(_encode_6bit(value) for value in (c1, c2, c3, c4))
+def _plantuml_timeout() -> int:
+    raw_timeout = os.environ.get("PLANTUML_TIMEOUT", str(DEFAULT_TIMEOUT_SECONDS))
+    try:
+        return max(1, int(raw_timeout))
+    except ValueError:
+        return DEFAULT_TIMEOUT_SECONDS
 
 
-def _encode_plantuml(source: str) -> str:
-    compressed = zlib.compress(source.encode("utf-8"))[2:-4]
-    encoded = []
-    for index in range(0, len(compressed), 3):
-        chunk = compressed[index : index + 3]
-        if len(chunk) == 1:
-            encoded.append(_append_3_bytes(chunk[0], 0, 0))
-        elif len(chunk) == 2:
-            encoded.append(_append_3_bytes(chunk[0], chunk[1], 0))
-        else:
-            encoded.append(_append_3_bytes(chunk[0], chunk[1], chunk[2]))
-    return "".join(encoded)
+def _strip_xml_preamble(svg: str) -> str:
+    """Make PlantUML's SVG output safe to inline in MkDocs-generated HTML."""
+
+    svg = re.sub(r"^\s*<\?xml[^>]*>\s*", "", svg)
+    svg = re.sub(r"^\s*<!DOCTYPE[^>]*>\s*", "", svg)
+    return svg.strip()
 
 
-def _plantuml_url(source: str) -> str:
-    return f"{PLANTUML_SERVER}/{_encode_plantuml(source)}"
+def _render_plantuml_svg(source: str) -> tuple[str | None, str | None]:
+    """Render PlantUML to SVG with a local command.
+
+    Returns ``(svg, None)`` on success and ``(None, message)`` when local
+    rendering is not available. No network fallback is used, because PlantUML
+    sources can contain internal design details.
+    """
+
+    command = _plantuml_command()
+    if command is None:
+        return (
+            None,
+            "PlantUML local renderer is not configured. Install `plantuml`, "
+            "or set PLANTUML_COMMAND / PLANTUML_JAR.",
+        )
+
+    try:
+        completed = subprocess.run(
+            [*command, "-tsvg", "-pipe"],
+            input=source,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=_plantuml_timeout(),
+        )
+    except FileNotFoundError:
+        return None, f"PlantUML command was not found: {command[0]}"
+    except subprocess.TimeoutExpired:
+        return None, "PlantUML local rendering timed out."
+
+    if completed.returncode != 0:
+        detail = completed.stderr.strip() or completed.stdout.strip()
+        return None, f"PlantUML local rendering failed: {detail}"
+
+    svg = _strip_xml_preamble(completed.stdout)
+    if not svg.startswith("<svg"):
+        return None, "PlantUML local renderer did not return SVG output."
+
+    return svg, None
+
+
+def _placeholder_svg(markdown_alt: str, message: str, source: str) -> str:
+    alt = html.escape(markdown_alt or "PlantUML diagram", quote=True)
+    message_text = html.escape(message)
+    source_text = html.escape(source[:400])
+    if len(source) > 400:
+        source_text += "…"
+
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-label="{alt}">
+  <rect width="960" height="260" rx="16" fill="#fff7ed" stroke="#fdba74" stroke-width="2" />
+  <text x="32" y="48" fill="#9a3412" font-family="sans-serif" font-size="22" font-weight="700">PlantUML diagram was not rendered locally</text>
+  <text x="32" y="84" fill="#7c2d12" font-family="monospace" font-size="15">{message_text}</text>
+  <foreignObject x="32" y="112" width="896" height="116">
+    <pre xmlns="http://www.w3.org/1999/xhtml" style="margin:0;white-space:pre-wrap;font:13px monospace;color:#431407;">{source_text}</pre>
+  </foreignObject>
+</svg>"""
 
 
 def _figure(markdown_alt: str, source: str) -> str:
     alt = html.escape(markdown_alt or "PlantUML diagram", quote=True)
+    svg, error = _render_plantuml_svg(source)
+    if svg is None:
+        svg = _placeholder_svg(markdown_alt, error or "PlantUML local rendering failed.", source)
+
     return (
         f'<figure class="plantuml-card">\n'
-        f'  <img src="{_plantuml_url(source)}" alt="{alt}" />\n'
-        f'  <figcaption>{alt}</figcaption>\n'
-        f'</figure>'
+        f"  {svg}\n"
+        f"  <figcaption>{alt}</figcaption>\n"
+        f"</figure>"
     )
 
 
