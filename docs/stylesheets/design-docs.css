@@ -100,6 +100,33 @@
   font-size: 0.66rem;
 }
 
+.md-typeset .mermaid {
+  margin: 1.25em 0;
+  padding: 1rem;
+  overflow-x: auto;
+  border: 1px solid rgb(15 23 42 / 12%);
+  border-radius: 0.7rem;
+  background: #fff;
+  box-shadow: 0 0.2rem 0.7rem rgb(15 23 42 / 8%);
+}
+
+.md-typeset .mermaid code {
+  background: transparent;
+}
+
+.md-typeset .mermaid svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  background: #fff;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .mermaid {
+  border-color: rgb(255 255 255 / 16%);
+  box-shadow: 0 0.2rem 0.7rem rgb(0 0 0 / 28%);
+}
+
 [data-md-color-scheme="slate"] {
   --md-primary-fg-color: #6366f1;
   --md-accent-fg-color: #22d3ee;
