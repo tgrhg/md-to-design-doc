@@ -379,6 +379,125 @@
   
   
   
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    設計書運用ガイド
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            設計書運用ガイド
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides/design-doc-management.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    設計書の変更・管理ガイド
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides/documentation-generation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ドキュメント生成の仕組み
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides/mkdocs-material-cheatsheet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MkDocs Material 便利機能サンプル
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="pr-visual-review.html" class="md-nav__link">
         
@@ -512,6 +631,9 @@
 <h2 id="_2">ドキュメント一覧<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="architecture/sample-ec-service.html">サンプル EC サービス設計書</a></li>
+<li><a href="guides/design-doc-management.html">設計書の変更・管理ガイド</a></li>
+<li><a href="guides/documentation-generation.html">ドキュメント生成の仕組み</a></li>
+<li><a href="guides/mkdocs-material-cheatsheet.html">MkDocs Material 便利機能サンプル</a></li>
 <li><a href="pr-visual-review.html">PR 時の視覚確認方針</a></li>
 <li><a href="versioning.html">設計書のバージョン管理</a></li>
 </ul>
@@ -544,9 +666,10 @@
 </table>
 <h2 id="_4">運用イメージ<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <ol>
+<li><a href="guides/design-doc-management.html">設計書の変更・管理ガイド</a>で置き場所、変更粒度、レビュー観点を確認する。</li>
 <li>設計変更を Markdown / PlantUML / Mermaid / 画像としてコミットする。</li>
 <li>Pull Request を作成する。</li>
-<li>GitHub Actions で静的サイトをビルドする。</li>
+<li><a href="guides/documentation-generation.html">ドキュメント生成の仕組み</a>に沿って GitHub Actions が静的サイトを自動生成する。</li>
 <li>PR コメントの Preview URL から HTML 表示と <code>version.json</code> を確認する。</li>
 <li>権限や Pages 設定で URL が使えない場合は artifact をフォールバックにする。</li>
 <li>main ブランチにマージ後、GitHub Pages の production ルートに公開する。</li>
