@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">サンプルシステムコンテキスト図</title>
+  <desc id="desc">Markdown 管理対象の画像アセット例</desc>
+  <rect width="960" height="420" fill="#f8fafc"/>
+  <rect x="360" y="120" width="240" height="150" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="480" y="185" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#1e3a8a">EC Service</text>
+  <text x="480" y="220" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#1e40af">商品・注文・決済 API</text>
+  <rect x="70" y="140" width="170" height="95" rx="16" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+  <text x="155" y="195" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#166534">利用者</text>
+  <rect x="720" y="65" width="170" height="95" rx="16" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+  <text x="805" y="120" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#92400e">決済サービス</text>
+  <rect x="720" y="260" width="170" height="95" rx="16" fill="#fae8ff" stroke="#c026d3" stroke-width="3"/>
+  <text x="805" y="315" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="700" fill="#86198f">通知サービス</text>
+  <path d="M240 188 H350" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M600 170 L710 120" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <path d="M600 230 L710 295" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker></defs>
+</svg>
