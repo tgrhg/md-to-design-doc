@@ -1,18 +1,6 @@
 {
-  "updatedAt": "2026-06-12T18:13:32.359Z",
+  "updatedAt": "2026-06-12T18:14:54.954Z",
   "previews": [
-    {
-      "kind": "pr-preview",
-      "prNumber": 15,
-      "title": "Remove PlantUML generation support",
-      "url": "https://tgrhg.github.io/md-to-design-doc/previews/pr-15/",
-      "docVersion": "0.3.0",
-      "refName": "15/merge",
-      "sha": "b03e2894dcff0e974f4980905e55b9b4f21d0abd",
-      "shortSha": "b03e289",
-      "buildTime": "2026-06-12T18:13:14Z",
-      "updatedAt": "2026-06-12T18:13:32.359Z"
-    },
     {
       "kind": "pr-preview",
       "prNumber": 14,
